@@ -1,9 +1,9 @@
 
 .hero-banner {
-    background-image: url(/static/images/hero-bg.jpg);
+    background-image: url(/static//media/images/hero-bg.jpg);
     height: 90vh;
     background-size: cover;
-    paddind-top: 8vh;
+    padding-top: 8vh;
     padding-bottom: 40vh;
     background-position: fixed;
     background-repeat: no-repeat;
@@ -24,7 +24,7 @@
 
 .parallax {
   /* The image used */
-  background-image: url(/static/images/hero-bg.jpg);
+  background-image: url(/static/media/images/hero-bg.jpg);
 
   /* Set a specific height */
   min-height: 90vh  ;

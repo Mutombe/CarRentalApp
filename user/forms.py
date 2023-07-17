@@ -1,58 +1,23 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate
-from .models import Account, ClientProfile
+from django.contrib.auth.forms import PasswordResetForm
+from .models import CustomUser
+from django import forms 
 
-class AccountRegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=200, required=True, help_text='Required')
-    firstname = forms.CharField(max_length=60)
-    lastname = forms.CharField(max_length=60)
 
-    class Meta(UserCreationForm.Meta):
-        model = Account
-        fields = ('email', 'firstname', 'lastname', 'password1', 'password2')
-
-    def clean_email_account(self):
-        email = self.cleaned_data['email'].lower()
-        try:
-            account = Account.objects.exclude(pk=self.instance.pk).get(email=email)
-        except Account.DoesNotExist:
-            return email
-        raise forms.ValidationError('Email "%s" is already in use.' % account)
-
-class AccountAuthenticationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-
+class CreateUserForm(UserCreationForm):
+    is_car_owner = forms.BooleanField(required=False, label='Are you a car owner ?')
     class Meta:
-        model =Account
-        fields = ('email', 'password')
-
-    def clean(self):
-        if self.is_valid():
-            email = self.cleaned_data['email']
-            password = self.cleaned_data['password']
-            if not authenticate(email=email, password=password):
-                raise forms.ValidationError("Invalid Account, check your email or password")
-
-class AccountEditForm(forms.ModelForm):
-    class Meta:
-        model = Account
-        fields = ('email', 'firstname', 'lastname', 'hide_email' )
-
-    def clean_email(self):
-        email = self.cleaned_data['email'].lower()
-        try:
-            account = Account.objects.exclude(pk=self.instance.pk).get(email=email)
-        except Account.DoesNotExist:
-            return email
-        raise forms.ValidationError('"%s" is already in use.' % account)
+        model = CustomUser
+        fields = ['username', 'email', 'password1', 'password2', 'is_car_owner']
 
     def save(self, commit=True):
-        account = super(AccountEditForm, self).save(commit=False)
-        account.email = self.cleaned_data['email'].lower()
-        account.firstname = self.cleaned_data['firstname']
-        account.lastname = self.cleaned_data['lastname']
-        account.hide_email = self.cleaned_data['hide_email']
+        user = super().save(commit=False)
+        user.is_car_owner = self.cleaned_data.get('is_car_owner', False)
         if commit:
-            account.save()
-        return account
+            user.save()
+        return user
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(max_length=254, widget=forms.EmailInput(
+        attrs={'autocomplete': 'email', 'class': 'form-control'}
+        ))

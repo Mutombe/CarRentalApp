@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ car.make }} {{ car.model }} - Car Rental{% endblock %}
+{% block content %}
+
+<!-- car_profile.html -->
+
+<div style="text-align: center;">
+    <h1 style="font-size: 48px; margin-top: 50px;">{{ car.make }} {{ car.model }}</h1>
+    <img src="{{ car.photo.url }}" alt="{{ car.make }} {{ car.car_model }}" style="max-width: 400px; max-height: 400px;"><br>
+    <span style="font-size: 24px;">{{ car.model_year }} {{ car.color }}</span><br>
+    <span style="font-size: 24px;">{{ car.num_seats }} Seats</span><br>
+    <span style="font-size: 24px;">{{ car.car_engine }}</span><br>
+    <span style="font-size: 24px;">{{ car.mileage }} Miles</span><br>
+    {% if car.has_tracker %}
+        <span style="font-size: 24px;">Has Tracker</span><br>
+    {% else %}
+        <span style="font-size: 24px;">No Tracker</span><br>
+    {% endif %}
+    <span style="font-size: 24px;">${{ car.rental_price }}/day</span><br>
+    <span style="font-size: 24px;">{{ car.min_booking_days }} Day Minimum Rental</span><br>
+    <span style="font-size: 24px;">${{ car.late_return_fee }}/hour Late Return Fee</span><br>
+    <p style="font-size: 18px; margin-top: 30px;">{{ car.description }}</p>
+    <h2 style="font-size: 36px; margin-top: 50px;">Rentals</h2>
+    {% if rentals %}
+        <table style="margin: 20px auto; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Renter Name</th>
+                    <th>Rental Period</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rental in rentals %}
+                    <tr>
+                        <td>{{ rental.rental_start_date }}</td>
+                        <td>{{ rental.renter_name }}</td>
+                        <td>{{ rental.rental_period }} days</td>
+                        <td>${{ rental.rental_price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="font-size: 18px;">No rentals found.</p>
+    {% endif %}
+</div>
+{% endblock %}

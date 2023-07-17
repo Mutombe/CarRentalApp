@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<div class ='col-sm-6 col-sm-offset-3'>
+    <div class="panel panel-primary">
+        <div class="list-group-item active">
+            <strong><span class="glyphicon glyphicon-film"></span> Car Create</strong>
+        </div>
+        <br>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" class='btn btn-primary' value="Create post">
+        </form>
+    </div>
+</div>
+
+<button type="button" onclick="showAddCarForm()">Add Car</button>
+<div id="add-car-form" style="display: none">
+    <form id="add-car-form" method='POST' action="{% url 'add' %}">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Save</button>
+        <button type="button" onclick="cancelAddCar()">Cancel</button>
+    </form>
+</div> 
+{% endblock %}
+

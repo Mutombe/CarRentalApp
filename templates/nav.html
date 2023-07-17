@@ -1,0 +1,163 @@
+<style type="text/css">
+    form.form-inline.my-0.my-lg-0 {
+      display: flex;
+  }
+
+    <style>
+      .navbar {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 0 20px;
+      }
+      
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .navbar-brand img {
+        margin-left: 10px;
+      }
+      
+      .navbar-toggler {
+        border: none;
+      }
+      
+      .nav-link {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      
+      .nav-link:hover {
+        color: #007bff;
+      }
+      
+
+      .active {
+        color: #007bff !important;
+      }
+
+      .active-link {
+        color: #007bff;
+        font-weight: bold;
+      }
+      
+      .form-inline {
+        margin-left: auto;
+      }
+      
+      .form-control {
+        border-color: #007bff;
+        font-size: 14px;
+      }
+      
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      
+      .btn-primary:hover {
+        background-color: #0062cc;
+      }
+      
+      .material-icons {
+        font-size: 24px;
+        vertical-align: middle;
+      }
+      
+      .nav-item {
+        margin-right: 20px;
+      }
+
+  
+</style>
+
+<nav class="navbar fixed-top py-3 navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid" style="padding-right: 200px; padding-left:200px;">
+
+     <a class="navbar-brand" href="{% url 'landingpage' %}">
+        Car Rental<img src="/static/media/images/logo.png" width="130" alt="logo">
+     </a>
+     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+     </button>  
+     <div class="col-auto">
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" >
+          <a class="nav-link {% if request.path == "/" %}active{% endif%}"  aria-current="page" href="{% url 'landingpage' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == "cars" %}active{% endif%}" href="{% url 'main_app:cars' %}">Cars</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}" id="navbar Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           Get your car rented
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+           <li><a class="dropdown-item" href="{% url 'dashboard' %}">Action</a></li>
+           <li><a class="dropdown-item" href="#">Another action</a></li>
+           <li><hr class="dropdown-divider"></li>
+           <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'contact-view' %}active{% endif %}"  href="{% url 'contact:contact-view' %}">Contact</a>
+        </li>
+
+        <li class="nav-item" style="padding-top:7px; padding-bottom:7px;">
+           <form class="form-inline my-0 my-lg-0" method="post" action="">
+                  <div>
+                      {% csrf_token %}
+                      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="car_search" style="width: 150px;">
+                  </div>
+                   <div>
+                      <button class="btn btn-primary" type="submit"><i class="fas fa-search">Go</i></button>
+                  </div>
+           </form>
+       </li>
+
+           <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{#% url 'account:view' user_id=request.user.id %#}"><i class="material-icons">account_circle</i> Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="material-icons">logout</i> Logout</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'logins' %}"><i class="material-icons">login</i> Login</a></li>
+            {% endif %}
+          </ul>
+       </ul>
+     </div>
+     </div>
+    </div>
+
+    <script>
+      function updateActiveLink() {
+        var currentUrl = window.location.pathname;
+        var currentName = resolve(currentUrl).url_name;
+        var links = document.querySelectorAll('.nav-link');
+        links.forEach(function(link) {
+          var url = link.getAttribute('href');
+          var name = resolve(url).url_name;
+          if (currentName === name) {
+            link.classList.add('active-link');
+          } else {
+            link.classList.remove('active-link');
+          }
+        });
+      }
+      
+      updateActiveLink();
+      </script>
+
+</nav>
+
+
+
+
+

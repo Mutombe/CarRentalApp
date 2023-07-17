@@ -1,0 +1,96 @@
+<html>
+<style>
+    .payment-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      
+      .payment-options {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      
+      .payment-options button {
+        margin: 0 10px;
+        padding: 10px;
+        border: none;
+        background-color: #eee;
+        cursor: pointer;
+      }
+      
+      .payment-options button.active {
+        background-color: #555;
+        color: #fff;
+      }
+      
+      .payment-info div {
+        display: none;
+      }
+      
+      .payment-info div.active-info {
+        display: block;
+        text-align: center;
+
+    .payment-options button.active {
+
+    }
+          
+    .payment-options button:hover {
+            text-decoration: underline;
+    }
+          
+    .payment-options button.active:hover {
+            text-decoration: none;
+    }
+      }
+</style>
+<div class="payment-container">
+    <div class="payment-options">
+      <button id="mastercard-btn" class="active">Mastercard</button>
+    </hr>
+      <button id="ecocash-btn">Ecocash</button>
+    </div>
+</hr>
+    <div class="payment-info">
+      <div id="mastercard-info" class="active-info">
+        <p>Please enter your Mastercard information:</p>
+        <form>
+          <!-- Mastercard form fields here -->
+        </form>
+      </div>
+      <div id="ecocash-info">
+        <p>Please enter your Ecocash information:</p>
+        <form>
+          <!-- Ecocash form fields here -->
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+    const mastercardBtn = document.getElementById("mastercard-btn");
+    const ecocashBtn = document.getElementById("ecocash-btn");
+    const mastercardInfo = document.getElementById("mastercard-info");
+    const ecocashInfo = document.getElementById("ecocash-info");
+    
+    mastercardBtn.addEventListener("click", () => {
+      mastercardBtn.classList.add("active");
+      ecocashBtn.classList.remove("active");
+      mastercardInfo.classList.add("active-info");
+      ecocashInfo.classList.remove("active-info");
+    });
+    
+    ecocashBtn.addEventListener("click", () => {
+      ecocashBtn.classList.add("active");
+      mastercardBtn.classList.remove("active");
+      ecocashInfo.classList.add("active-info");
+      mastercardInfo.classList.remove("active-info");
+    });
+</script>
+</html>

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+
+<br/>
+<br/>
+<br/>
+
+
+<style>
+.container {
+  background-size: cover;
+  min-height: 100vh;
+  padding-top: 96px;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+button[type="reset"],
+button[type="submit"] {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+button[type="reset"] {
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+}
+
+button[type="submit"] {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+}
+
+button[type="reset"]:hover,
+button[type="submit"]:hover {
+  opacity: 0.8;
+}
+</style>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">Contact Us</h3>
+        </div>
+        <div class="card-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="id_Topic">Topic</label>
+              <input type="text" name="Topic" id="id_Topic" class="form-control" required maxlength="100">
+            </div>
+            <div class="form-group">
+              <label for="id_Message">Message</label>
+              <textarea name="Message" id="id_Message" class="form-control" cols="40" rows="10" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="id_Contact_Email">Email address</label>
+              <input type="email" name="Contact_Email" id="id_Contact_Email" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <input type="text" name="forcefield" id="id_forcefield" style="display:none;">
+            </div>
+            <div class="form-group">
+              <button type="reset" class="btn btn-secondary">Reset</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<center>
+    <h1>Car Reservation</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ fom.as_p }}
+        brand : <div id="mark">{{ car.brand }} <br></div>
+        model : <div id="model">{{ car.model }} <br></div>
+        cost : <div id="cost">{{ car.daily_rental_price }} <br></div>
+        model_year : <div id="year">{{ car.model_year }}</div><br/>
+        status : <div id="status">{{ car.is_booked }}</div>
+        <button class="btn btn-outline-danger shadow-p p-3 mb-5 bg-red rounded" type="submit">Potwierdz</button>
+    </form>
+    <button onclick="convert_date()">Sprawdz koszt</button>
+        <p id="result"></p>
+</center>
+<script type="text/javascript">
+    function convert_date(){
+        day_1=document.getElementById("id_day1").value
+        day_2=document.getElementById("id_day2").value
+        day_3=document.getElementById("id_day3").value
+        day_4=document.getElementById("id_day4").value
+        day_5=document.getElementById("id_day5").value
+        var cost = document.getElementById('cost').innerHTML;
+
+        console.log(cost)
+        console.log(day_1)
+        console.log(day_2)
+        console.log(day_3)
+        console.log(day_4)
+        console.log(day_5)
+
+        var date1_in_ms = Date.parse(day_1);
+        console.log(date1_in_ms); //this is in milliseconds
+        var date2_in_ms = Date.parse(day_2);
+        console.log(date2_in_ms); //this is in millisecond
+        var date3_in_ms = Date.parse(day_3);
+        console.log(date3_in_ms); //this is in milliseconds
+        var date4_in_ms = Date.parse(day_4);
+        console.log(date4_in_ms); //this is in millisecond
+        var date5_in_ms = Date.parse(day_5);
+        console.log(date5_in_ms); //this is in milliseconds
+    
+
+        var diff_dates = date5_in_ms - date1_in_ms
+        console.log(diff_dates)
+        diff_days = Math.ceil(diff_dates / (1000 * 60 * 60 * 24));
+        price = diff_days * cost
+        console.log(diff_days)
+        document.getElementById("result").innerHTML = price;
+        }
+</script>
+{% endblock %}

@@ -1,2 +1,0 @@
-# CarRentalApp
-Car rental system

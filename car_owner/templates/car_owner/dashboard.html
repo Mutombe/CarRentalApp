@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    .form-control-file {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control-file:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .form-control-file:disabled {
+        background-color: #e9ecef;
+    }
+
+    .car-preview {
+        width: 300px;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .col-md-6 {
+            width: 100%;
+        }
+    }
+
+</style>
+</br>
+<a href="{#% url 'upload' %#}" class="ml-2">Click</a> 
+<div class="container">
+    <h2>{{ user.username }}'s Dashboard</h2>
+</br>
+ 
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Your Cars</h3> 
+        </br>
+            {% if cars %}
+            <ul class="list-group">
+                {% for car in cars %}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ car.image.url }}" alt="{{ car.car_model }}" class="car-preview">
+                        </div>
+                        <div class="col-md-8">
+                            <h4>{{ car.car_model }}</h4>
+                            <p>{{ car.make }} {{ car.model_year }} {{ car.mileage }} {{ car.color }} {{ car. }}</p>
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li>You haven't uploaded any cars yet!</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You haven't uploaded any cars yet!</p>
+            {% endif %}
+
+
+            <button type="button" class="btn btn-primary" onclick="showAddCarForm()">Add Car</button>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card" id="add-car-form" style="display: none; padding:10px" >
+                <div class="card-header">
+                    <h4 class="card-title">{{ car_form.instance.pk|default:"Add Car"}}Add Car</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'dashboard' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.as_p }}   
+                        </div>
+                        </br>
+                        <button type="submit" class="btn btn-primary">Add Car</button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelAddCar()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</br>
+<script>
+    function showAddCarForm() {
+        var addCarForm = document.getElementById('add-car-form');
+        addCarForm.style.display = 'block';
+    }
+
+    function cancelAddCar() {
+        var addCarForm = document.getElementById('add-car-form');
+        addCarForm.style.display = 'none';
+    }
+
+    function previewCarPhoto(event) {
+        var preview = document.getElementById('car-photo-preview');
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.style.display ='block';
+        }
+        reader.readAsDataURL(file);
+    }
+</script>
+ {% endblock %}
+
+ 
+
+

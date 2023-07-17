@@ -1,0 +1,20 @@
+{% extends base.html%}
+{% block content %}
+{% for car in cars %}
+<div class="card">
+    <img src="{{ car.display.url }}" class="card-img-top" alt="{{ car.make }} {{ car.model }}">
+    <div class="card-body">
+        <h5 class="card-title">{{ car.make }} {{ car.model }}</h5>
+        <p class="card-text">Year: {{ car.year }}</p>
+        <p class="card-text">Color: {{ car.color }}</p>
+        <p class="card-text">Transmission: {{ car.transmission }}</p>
+        <p class="card-text">Price per day: {{ car.price_per_day }}</p>
+        <a href="{% url 'car_details' car.id %}" class="btn btn-primary">See details</a>
+    </div>
+    <div class="card-footer">
+        <small class="text-muted">Uploaded on {{ car.created_at }}</small>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content }

@@ -1,7 +1,7 @@
 # CarRentalApp
 # Django Car Rental Project
 
-This is a Django-based Car Rental project with 3 entities and User Groups: Customers, Car Owners, and Drivers. Car Owners can upload cars they want to get rented, view each car's rental history, change, update, read and delete their uploaded cars. They can also search for cars in their dashboard and the homepage, rent a car if it's not theirs, receive payments using Paynow or Stripe with the price they specify, and get their car rented for the time below the number of days they specified after the rental is complete. Car owners get a late return fee per hour, which is a price they also specify. Chauffeurs can upload their details, their driving experience, get rated, get booked and get paid per hour by the customer. The number of hours they work on a certain rental will be calculated from the number of days the customer is renting a car. They get paid after the job is done, and the customer has confirmed it's indeed done. Customers have their own homepage and can view all the cars in the system, rent them, choose a chauffeur in their rental form if they want one, view their car rental history in their history dashboard, rate cars, and rate chauffeurs.
+This is a Django-based Car Rental project with 3 User Groups: Customers, Car Owners, and Drivers. Car Owners can upload cars they want to get rented, view each car's rental history, change, update, read and delete their uploaded cars. They can also search for cars in their dashboard and the homepage, rent a car if it's not theirs, receive payments using Paynow with the price they specify, and get their car rented for the time below the number of days they specified after the rental is complete. Car owners get a late return fee per hour, which is a price they also specify. Chauffeurs can upload their details, their driving experience, get rated, get booked and get paid per hour by the customer. The number of hours they work on a certain rental will be calculated from the number of days the customer is renting a car. They get paid after the job is done, and the customer has confirmed it's indeed done. Customers have their own homepage and can view all the cars in the system, rent them, choose a chauffeur in their rental form if they want one, view their car rental history in their history dashboard, rate cars, and rate chauffeurs.
 
 ## Installation
 
@@ -50,9 +50,8 @@ Chauffeurs have the following abilities:
 *This account is where the money will be sent after the rental process is complete, as mentioned in the above logic.
 
 ## Images and Links
-No images or links are necessary for this project.
 ![Screenshot (25)](https://github.com/Mutombe/CarRentalApp/assets/99067471/d647dcb5-51e7-440b-a9e1-214bfae685e6)
-
+(https://github.com/Mutombe/CarRentalApp/assets/99067471/a9592b6a-9f62-4041-b644-fd97a6034096)
 
 
 

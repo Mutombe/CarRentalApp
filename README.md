@@ -50,7 +50,7 @@ Chauffeurs have the following abilities:
 *This account is where the money will be sent after the rental process is complete, as mentioned in the above logic.
 
 ## Images and Links
-![Screenshot (25)](https://github.com/Mutombe/CarRentalApp/assets/99067471/d647dcb5-51e7-440b-a9e1-214bfae685e6)
+![carrental (2)](https://github.com/Mutombe/CarRentalApp/assets/99067471/c991c4c4-01cd-4779-bc19-883ee8169b53)
 (https://github.com/Mutombe/CarRentalApp/assets/99067471/a9592b6a-9f62-4041-b644-fd97a6034096)
 
 

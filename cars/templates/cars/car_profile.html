@@ -1,49 +1,353 @@
-{% extends "base.html" %}
-{% block title %}{{ car.make }} {{ car.model }} - Car Rental{% endblock %}
+{% extends 'base.html' %}
+
 {% block content %}
+<style>
+.container {
+    margin-top: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1em;
+    padding-top: 2em;
+  }
+  
+  .options {
+    flex: 0 0 200px;
+    padding: 20px;
+  }
+  
+  .option {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .option:hover,
+  .option.active {
+    background-color: #007bff;
+    color: #eee ;
+  }
+  
+  .option.active span {
+    color: #eee;
+  }
 
-<!-- car_profile.html -->
+  .content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .content > div {
+    display: none;
+  }
+  
+  .content > div.active {
+    display: block;
+  }
+  
+  .content h2 {
+    color: #007bff3;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+  }
+  
+  .content p {
+    color: #007bff;
+  }
 
-<div style="text-align: center;">
-    <h1 style="font-size: 48px; margin-top: 50px;">{{ car.make }} {{ car.model }}</h1>
-    <img src="{{ car.photo.url }}" alt="{{ car.make }} {{ car.car_model }}" style="max-width: 400px; max-height: 400px;"><br>
-    <span style="font-size: 24px;">{{ car.model_year }} {{ car.color }}</span><br>
-    <span style="font-size: 24px;">{{ car.num_seats }} Seats</span><br>
-    <span style="font-size: 24px;">{{ car.car_engine }}</span><br>
-    <span style="font-size: 24px;">{{ car.mileage }} Miles</span><br>
-    {% if car.has_tracker %}
-        <span style="font-size: 24px;">Has Tracker</span><br>
-    {% else %}
-        <span style="font-size: 24px;">No Tracker</span><br>
-    {% endif %}
-    <span style="font-size: 24px;">${{ car.rental_price }}/day</span><br>
-    <span style="font-size: 24px;">{{ car.min_booking_days }} Day Minimum Rental</span><br>
-    <span style="font-size: 24px;">${{ car.late_return_fee }}/hour Late Return Fee</span><br>
-    <p style="font-size: 18px; margin-top: 30px;">{{ car.description }}</p>
-    <h2 style="font-size: 36px; margin-top: 50px;">Rentals</h2>
-    {% if rentals %}
-        <table style="margin: 20px auto; border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Renter Name</th>
-                    <th>Rental Period</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for rental in rentals %}
-                    <tr>
-                        <td>{{ rental.rental_start_date }}</td>
-                        <td>{{ rental.renter_name }}</td>
-                        <td>{{ rental.rental_period }} days</td>
-                        <td>${{ rental.rental_price }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p style="font-size: 18px;">No rentals found.</p>
-    {% endif %}
-</div>
+  .option.active{
+    background-color: #333
+    color: #fff
+   }
+    .image-thumbnail{
+        height: 200px;
+        border-radius: 1px;
+    }
+    .thumbnail{
+      border:solid;
+      border-radius: 10px
+      height: 200px;
+    }
+  
+
+
+
+</style>
+
+<div class="container">
+    <div class="options">
+      <button class="option active" data-target="button1"><span>Car</span></button>
+      <button class="option" data-target="button3"><span>Book</span></button>
+      <span><a href="{% url 'landingpage' %}"><button class="option">Go Back</button></a></span>
+    </div>
+    <div class="content">
+      <div class="button1 active" id="button1">
+        <h2>{{ car.make }}</h2>
+            <a href="{% url 'photo' pk=car.pk %}">
+            <img class="image-thumbnail"
+            src="{{ car.image.url }}" 
+            alt="image">
+            </a>
+      </div>
+
+      <div class="button3" id="button3">
+        <h2>Booking</h2>
+      
+        <main>
+          <div class="py-5 text-center" style="display:flex; margin-right:4em; margin-left:-7em">
+            <img class="thumbnail d-block mx-auto mb-4" src="{{ car.image.url }}" alt="" width="200" height="120">
+            <h2>Checkout form</h2>
+            <p class="lead"></p>
+          </div>
+        
+          <div class="row g-5">
+            <div class="col-md-5 col-lg-4 order-md-last">
+              <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Your Rental Package</span>
+                <span class="badge bg-primary rounded-pill">3</span>
+              </h4>
+              <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                  <div>
+                    <h6 class="my-0">{{car.make}}</h6>
+                    <small class="text-body-secondary">{{car.description}}</small>
+                  </div>
+                  <span class="text-body-secondary">${{car.daily_rental_price}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                  <div>
+                    <h6 class="my-0">Chauffeur</h6>
+                    <small class="text-body-secondary">Brief description</small>
+                  </div>
+                  <span class="text-body-secondary">$8</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                  <div>
+                    <h6 class="my-0">Fuel ({{car.fuel_type}})</h6>
+                    <small class="text-body-secondary">Brief description</small>
+                  </div>
+                  <span class="text-body-secondary">$5</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                  <div class="text-success">
+                    <h6 class="my-0">Promo code</h6>
+                    <small>EXAMPLECODE</small>
+                  </div>
+                  <span class="text-success">−$5</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total (USD)</span>
+                  <strong>$20</strong>
+                </li>
+              </ul>
+        
+              <form class="card p-2">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Promo code">
+                  <button type="submit" class="btn btn-secondary">Redeem</button>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-7 col-lg-8">
+              <h4 class="mb-3">Billing address</h4>
+              <form class="needs-validation" novalidate="">
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <label for="firstName" class="form-label">First name</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                    <div class="invalid-feedback">
+                      Valid first name is required.
+                    </div>
+                  </div>
+        
+                  <div class="col-sm-6">
+                    <label for="lastName" class="form-label">Last name</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+                    <div class="invalid-feedback">
+                      Valid last name is required.
+                    </div>
+                  </div>
+        
+                  <div class="col-12">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text">@</span>
+                      <input type="text" class="form-control" id="username" placeholder="Username" required="">
+                    <div class="invalid-feedback">
+                        Your username is required.
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                    <div class="invalid-feedback">
+                      Please enter a valid email address for rental updates.
+                    </div>
+                  </div>
+        
+                  <div class="col-12">
+                    <label for="address" class="form-label">Residence Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="3405 Makurwe Close" required="">
+                    <div class="invalid-feedback">
+                      Please enter your residence address.
+                    </div>
+                  </div>
+        
+                  <div class="col-12">
+                    <label for="address2" class="form-label">Address 2 <span class="text-body-secondary">(Optional)</span></label>
+                    <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                  </div>
+        
+                  <div class="col-md-5">
+                    <label for="country" class="form-label">City</label>
+                    <select class="form-select" id="country" required="">
+                      <option value="">Choose...</option>
+                      <option>Harare</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please select a valid city.
+                    </div>
+                  </div>
+        
+                  <div class="col-md-4">
+                    <label for="state" class="form-label">Residence</label>
+                    <select class="form-select" id="state" required="">
+                      <option value="">Choose...</option>
+                      <option>Borrodale</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Please provide a valid state.
+                    </div>
+                  </div>
+        
+                  <div class="col-md-3">
+                    <label for="zip" class="form-label"></label>
+                    <input type="text" class="form-control" id="zip" placeholder="" required="">
+                    <div class="invalid-feedback">
+                      Zip code required.
+                    </div>
+                  </div>
+                </div>
+        
+                <hr class="my-4">
+        
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="same-address">
+                  <label class="form-check-label" for="same-address">PickUp Address</label>
+                </div>
+        
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="save-info">
+                  <label class="form-check-label" for="save-info">Save this information for next time</label>
+                </div>
+        
+                <hr class="my-4">
+        
+                <h4 class="mb-3">Payment</h4>
+        
+                <div class="my-3">
+                  <div class="form-check">
+                    <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
+                    <label class="form-check-label" for="credit">Ecoacash</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
+                    <label class="form-check-label" for="debit">Debit card</label>
+                  </div>
+                  <div class="form-check">
+                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required="">
+                    <label class="form-check-label" for="paypal">Telecash</label>
+                  </div>
+                </div>
+        
+                <div class="row gy-3">
+                  <div class="col-md-6">
+                    <label for="cc-name" class="form-label">Name on card</label>
+                    <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+                    <small class="text-body-secondary">Ecocash Number</small>
+                    <div class="invalid-feedback">
+                      Ecoacash Number is required
+                    </div>
+                  </div>
+        
+                  <div class="col-md-6">
+                    <label for="cc-number" class="form-label">Telecash</label>
+                    <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+                    <div class="invalid-feedback">
+                      Telecash number is required
+                    </div>
+                  </div>
+        
+                  <div class="col-md-3">
+                    <label for="cc-expiration" class="form-label">Expiration</label>
+                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                    <div class="invalid-feedback">
+                      Expiration date required
+                    </div>
+                  </div>
+        
+                  <div class="col-md-3">
+                    <label for="cc-cvv" class="form-label">CVV</label>
+                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                    <div class="invalid-feedback">
+                      Security code required
+                    </div>
+                  </div>
+                </div>
+        
+                <hr class="my-4">
+        
+                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      
+    </div>
+  </div>
+  
+<script>
+// Get all the options
+var options = document.querySelectorAll('.option');
+
+// Add click event listeners to the options
+for (var i = 0; i < options.length; i++) {
+  options[i].addEventListener('click', function(e) {
+    e.preventDefault();
+    // Get the target data attribute
+    var target = this.getAttribute('data-target');
+    // Hide all the content elements
+    var content = document.querySelectorAll('.content > div');
+    for (var j = 0; j < content.length; j++) {
+      content[j].classList.remove('active');
+    }
+    // Show the content element with the corresponding target
+    var element = document.getElementById(target);
+    element.classList.add('active');
+    // Set the active class on the clicked option
+    var activeOption = document.querySelector('.option.active');
+    activeOption.classList.remove('active');
+    this.classList.add('active');
+  });
+}
+</script>
 {% endblock %}
+
+  

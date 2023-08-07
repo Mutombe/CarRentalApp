@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}  
+<style>
+    .form-group:hover .form-label {
+      color: #007bff;
+    }
+    .form-group:hover .form-control {
+      border-color: #007bff;
+    }
+    .input-group-text:hover {
+      cursor: pointer;
+      background-color: #007bff;
+      color: #ffffff;
+      border-color: #007bff;
+    }
+    .profile-pic {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .profile-pic img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    .profile-pic label {
+      font-weight: bold;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+    .profile-pic input[type="file"] {
+      display: none;
+    }
+    .profile-pic .btn {
+      margin-top: 0.5rem;
+    }
+</style>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">Edit Profile</div>
+          <div class="card-body">
+            <form method="POST" action="{% url 'profile_edit' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="profile-pic">
+                <label for="id_profile_pic">Profile Picture</label>
+                <img src="{% if form.profile_pic.value %}
+                              {{ form.profile_pic.value.url }}
+                            {% else %}
+                              static/media/user_prof_pic/default_prof_pic.png
+                            {% endif %}" alt="Profile Picture">
+                <input type="file" name="profile_pic" id="id_profile_pic" accept="image/*">
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('id_profile_pic').click()">Select Picture</button>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                {{ form.phone_number }}
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="{{ form.city.id_for_label }}">City</label>
+                {{ form.city }}
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="{{ form.address.id_for_label }}">Address</label>
+                {{ form.address }}
+              </div>
+
+              <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+

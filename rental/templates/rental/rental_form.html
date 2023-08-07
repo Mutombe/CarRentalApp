@@ -1,0 +1,31 @@
+<h1>Rental form</h1>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Rent {{ car.make }} {{ car.model }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+
+  <h1>Rental Reservation Form</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h2>Chauffeur</h2>
+    <ul>
+      {% for chauffeur in car.chauffeur_set.all|order_by:'experience_years' %}
+        <li>
+          <input type="radio" name="with_chauffeur" value="{{ chauffeur.id }}">
+          <strong>{{ chauffeur.name }}</strong>
+          <p>Experience: {{ chauffeur.experience_years }} years</p>
+          <p>Hourly Rate: {{ chauffeur.hourly_rate }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

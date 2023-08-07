@@ -1,17 +1,44 @@
 import re
 from django import forms
-from cars.models import Car, CarImage
+from user.models import UserProfile
+from .models import CarOwnerProfile
+from cars.models import Car
 from django.core.exceptions import ValidationError
-from multiupload.fields import MultiFileField, MultiMediaField, MultiImageField
+
+#from multiupload.fields import MultiFileField, MultiMediaField, MultiImageField
 #from django.forms import ClearableFileInput
 
 def validate_zimbabwean_plate_number(value):
     if not re.match(r'^[A-Z]{3}\d{4}$', value):
         raise ValidationError('Invalid Zimbabwean number plate')
-
-class CarAddingForm(forms.ModelForm):
-    pass
-
+    
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        exclude = ['id', 'owner', 'is_booked', 'capacity', 'like']
+        fields = ["image","make","car_model","daily_rental_price","late_return_fee_per_hr","ecocash_rate","plate_number","mileage","model_year", "fuel_type","color","num_seats","description"]
+        
+class OwnerProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ['user']
+        fields = ['profile_pic', 'phone_number', 'city', 'address']
+        
+        labels = {
+            'profile_pic': 'Profile Picture',
+            'phone_number': 'Phone Number',
+            'city': 'City',
+            'address': 'Address',
+        }
+        
+        widgets = {
+            'profile_pic': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    
+    
 #class MultipleFileInput(forms.ClearableFileInput):
 #   allow_multiple_selected = True
     
@@ -28,20 +55,5 @@ class CarAddingForm(forms.ModelForm):
 #            result = single_file_clean(data, initial)
 #            return result
 
-class CarForm(forms.ModelForm):
-    
-    image = MultiImageField(
-        min_num = 1,
-        max_num=3,
-        max_file_size=1024*1024*5,
-    )
-    
-    class Meta:
-        model = Car
-        exclude = ['id', 'owner', 'is_booked', 'capacity', 'like']
-        fields = ["make","car_model","daily_rental_price","late_return_fee_per_hr","plate_number","model_year", "fuel_type","color","num_seats","description"]
+
         
-class ImageForm(forms.ModelForm):
-    class Meta:
-        models =CarImage
-        fields = ['image']

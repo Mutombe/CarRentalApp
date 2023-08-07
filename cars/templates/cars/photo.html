@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<body>
+<a href="{% url 'car_detail' pk=car.pk %}" 
+    class="btn btn-outline-dark btn-sm m-1">Go back</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <img class="img-fluid" src="{{ car.image.url }}" alt="Car image">
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

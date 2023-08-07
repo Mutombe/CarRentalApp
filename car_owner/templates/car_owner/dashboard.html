@@ -1,134 +1,136 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 <style>
-    .form-control-file {
-        display: block;
-        width: 100%;
-        padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-image: none;
-        border: 1px solid #ced4da;
-        border-radius: 0.25rem;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    h1 {
+      padding-top: 1em;
+        margin-left: 3.9em;
+        margin-top: -1.4em;
+    }
+    .fit-image {
+      object-fit: cover;
+      height: 200px; /* Set the height to the desired value */
     }
 
-    .form-control-file:focus {
-        border-color: #80bdff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+    .col-20.head {
+      display: flex;
+      justify-content: space-between;
+      margin-right: 9em;
+  }
 
-    .form-control-file:disabled {
-        background-color: #e9ecef;
-    }
+  /* Styles for screens smaller than 600px */
+  @media (max-width: 600px) {
+    .container2 {
+      display: none; /* Hide content2 on smaller screens */
+  }
 
-    .car-preview {
-        width: 300px;
-        height: 200px;
-        object-fit: cover;
-        margin-bottom: 10px;
-    }
+  .pnumber{
+    display: none;
+  }
 
-    .form-control {
-        margin-bottom: 10px;
-    }
+  .model{
+    display: none;
+  }
 
-    .card-body {
-        padding: 10px;
-    }
-    
-    @media (max-width: 768px) {
-        .col-md-6 {
-            width: 100%;
-        }
-    }
+  .model_prop{
+    display: none;
+  }
 
+  .pnumber_prop{
+    display: none;
+  }
+
+  h1 {
+    padding-top: 1em;
+    margin-left: 1em;
+    margin-top: -1.4em;
+}
+
+}
 </style>
+
 </br>
-<a href="{#% url 'upload' %#}" class="ml-2">Click</a> 
-<div class="container">
-    <h2>{{ user.username }}'s Dashboard</h2>
+    
 </br>
- 
-    <div class="row">
-        <div class="col-md-6">
-            <h3>Your Cars</h3> 
-        </br>
-            {% if cars %}
-            <ul class="list-group">
-                {% for car in cars %}
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <img src="{{ car.image.url }}" alt="{{ car.car_model }}" class="car-preview">
-                        </div>
-                        <div class="col-md-8">
-                            <h4>{{ car.car_model }}</h4>
-                            <p>{{ car.make }} {{ car.model_year }} {{ car.mileage }} {{ car.color }} {{ car. }}</p>
-                        </div>
-                    </div>
-                </li>
-                {% empty %}
-                <li>You haven't uploaded any cars yet!</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>You haven't uploaded any cars yet!</p>
-            {% endif %}
-
-
-            <button type="button" class="btn btn-primary" onclick="showAddCarForm()">Add Car</button>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card" id="add-car-form" style="display: none; padding:10px" >
-                <div class="card-header">
-                    <h4 class="card-title">{{ car_form.instance.pk|default:"Add Car"}}Add Car</h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{% url 'dashboard' %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            {{ form.as_p }}   
-                        </div>
-                        </br>
-                        <button type="submit" class="btn btn-primary">Add Car</button>
-                        <button type="button" class="btn btn-secondary" onclick="cancelAddCar()">Cancel</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="col-20 head">
+  <h1 class="col-m-3">{{ user.username }}'s Dashboard</h1>
+  <a href="{% url 'car_add' %}" class="adding-link"><button type="submit" class="btn btn-warning">Add more</button></a>
 </div>
-</br>
-<script>
-    function showAddCarForm() {
-        var addCarForm = document.getElementById('add-car-form');
-        addCarForm.style.display = 'block';
-    }
 
-    function cancelAddCar() {
-        var addCarForm = document.getElementById('add-car-form');
-        addCarForm.style.display = 'none';
-    }
+{% for message in messages %}
+<p id="messages">{{message}}</p>
+{% endfor %}
 
-    function previewCarPhoto(event) {
-        var preview = document.getElementById('car-photo-preview');
-        var file = event.target.files[0];
-        var reader = new FileReader();
-        reader.onload = function() {
-            preview.src = reader.result;
-            preview.style.display ='block';
-        }
-        reader.readAsDataURL(file);
-    }
-</script>
- {% endblock %}
+<section class="vh-200 row-200" style="background-color: #eee;">
+    <div class="container py-5 h-200">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-9 col-xl-12">
+          <div class="card rounded-3">
+            <div class="card-body p-4">
+  
+              <h4 class="text-center my-3 pb-3">My Cars</h4>
 
- 
+                <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2">
+                  <div class="col-12">
+                    <div class="form-outline">
+                      <input type="text" id="form1" class="form-control" />
+                      <label class="form-label" for="form1">Search</label>
+                    </div>
+                  </div>
+  
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                  </div>
+                </form>
+  
+                <table class="table mb-4">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Cars</th>
+                      <th class="model" scope="col">Model</th>
+                      <th class="pnumber" scope="col">Plate Number</th>
+                      <th scope="col">Rental Status</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  {% if cars %}
+                  {% for car in cars %}
+                      <tbody>
+                          <tr> 
+                              <th scope="row">{{ car.id }}</th>
+                                  <td>{{ car.make }}</td>
+                                  <td class="model_prop" >{{ car.car_model }}</td>
+                                  <td class="pnumber_prop">{{ car.plate_number }}</td>
+                                {% if car.is_booked == True %}
+                                  <td>Booked</td>
+                                {% else %}
+                                  <td>Available</td>
+                                {% endif %}
+                                  <td>
+
+                                      <a href="/delete_car/{{car.pk}}">
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete
+                                        </button>
+                                      </a>
+                                      <a href="/edit/{{car.pk}}"><button type="submit" class="btn btn-success ms-1">Edit</button></a>
+
+                                  </td>
+                            </tr>
+                    {% endfor %}
+                    {% else %}
+                        <p>You dont have cars yet</p>
+                    {% endif %}
+                      </tbody>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  </section>
+
+
+  {% endblock %}
 
 

@@ -1,17 +1,123 @@
-{% extends "base.html" %}
-{% block title %}{% endblock %}
-{% block content %}
-    <center>
-        {% if query %}
-            <h1>Search results : {{query}}</h1>
-            <br/>
-            {% for car in query_base %}
-                <a href="{% url 'car_detail' car.id %}">{{ car }} - {{ car.model }} - {{ car.model_year }} - {{ car.photo }}</a>
-            <br/>
-            {% endfor %}
+{% extends 'base.html' %}
 
-            {% else %}
-                <h1>Sorry that car is not available yet </h1>
-            {% endif %}
-    </center>
+{% block content %}
+    <title>Car Search</title>
+    <style>
+
+    .body{
+        padding-top: 1em;
+    }
+    .search-result {
+        background-color: #f4f4f4;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        justify-content: center;
+    }
+
+    .center-results {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .car-name {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .car-model {
+        color: #888;
+    }
+
+    .car-details {
+        margin-top: 5px;
+    }
+
+    .car-details span {
+        margin-right: 10px;
+    }
+
+    .no-results {
+        color: red;
+    }
+</style>
+</head>
+<body class="body">
+    <div class="container">
+        <h1 class="mt-4">Car Search</h1>
+        <div class="form-group mt-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search for a car">
+        </div>
+    </div>
+    <div id="searchResultsContainer" class="center-results">
+        {% for car in search_results %}
+            <div class="search-result">
+                <h5 class="car-name">{{ car.name }}</h5>
+                <h6 class="car-model">{{ car.model }}</h6>
+                <div class="car-details">
+                    <span>Color: {{ car.color }}</span>
+                    <span>Year: {{ car.year }}</span>
+                    <span>Price: {{ car.price }}</span>
+                </div>
+                <a href="{#% url 'car_details' car.id %#}" class="card-link">View Details</a>
+            </div>
+        {% empty %}
+            <p class="no-results">No results found.</p>
+        {% endfor %}
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const searchInput = document.getElementById("searchInput");
+            const searchResults = document.getElementById("searchResultsContainer");
+
+            searchInput.addEventListener("input", function() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm.length > 0) {
+                    $.ajax({
+                        url: "/search_cars/",
+                        type: "GET",
+                        data: { search: searchTerm },
+                        success: function(response) {
+                            const results = response;
+
+                            searchResults.innerHTML = "";
+
+                            if (results.length > 0) {
+                                results.forEach(function(car) {
+                                    const carElement = document.createElement("div");
+                                    carElement.className = "search-result";
+                                    carElement.innerHTML = `
+                                        <h5 class="car-name">${car.make}</h5>
+                                        <h6 class="car-model">${car.car_model}</h6>
+                                        <div class="car-details">
+                                            <span>Color: ${car.color}</span>-<span>Year: ${car.year}</span>
+                                            <span>Price: ${car.price}</span>
+                                        </div>
+                                        
+                                    `;
+                                    searchResults.appendChild(carElement);
+                                });
+                            } else {
+                                const noResultsElement = document.createElement("div");
+                                noResultsElement.textContent = "No results found.";
+                                searchResults.appendChild(noResultsElement);
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                } else {
+                    searchResults.innerHTML = "";
+                }
+            });
+        });
+    </script>
+</body>
 {% endblock %}

@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!--Main Navigation-->
+  <header>
+    <style>
+      #intro {
+        background-image: url("https://mdbootstrap.com/img/new/fluid/city/018.jpg");
+        height: 100vh;
+      }
+
+      /* Height for devices larger than 576px */
+      @media (min-width: 992px) {
+        #intro {
+          margin-top: -58.59px;
+        }
+      }
+
+      .navbar .nav-link {
+        color: #fff !important;
+    }
+      section.text-center {
+        margin: 7em;
+        border-radius: 4em;
+    
+      }
+
+      img.d-block.w-100 {
+        border-radius: 0.5em;
+    }
+
+    img#cardimage {
+      height: 9em;
+      margin-top: 5px;
+      object-fit: inherit;
+      border-radius: 4px;
+  }
+
+  #icon{
+    margin-left: -1em;
+  }
+
+  
+
+  /* Styles for screens smaller than 600px */
+  @media (max-width: 600px) {
+    .container2 {
+      display: none; /* Hide content2 on smaller screens */
+  }
+
+  section.text-center {
+    margin: 20px;
+    border-radius: 4em;
+
+  }
+
+  .main {
+    color: aliceblue;
+    min-height: 100vh;
+    background: black;
+    height: 100%;
+}
+
+.col-auto {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  margin-left: -1px;
+}
+
+.card-title {
+  margin-bottom: .75rem;
+  color: antiquewhite;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}
+
+.pb-3, .py-3 {
+  padding-bottom: 1rem!important;
+  margin-left: -70px;
+}
+
+.form-outline .form-control~.form-label {
+  position: absolute;
+  top: 0;
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  left: .75rem;
+  padding-top: .37rem;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: all .2s ease-out;
+  color: rgba(0,0,0,.6);
+  margin-bottom: 0;
+  color: cadetblue;
+}
+
+}
+    </style>
+
+    <!-- Background image -->
+    <div id="intro" class="bg-image shadow-2-strong">
+      <div class="mask" style="background-color: rgba(0, 0, 0, 0.8);">
+        <div class="container d-flex align-items-center justify-content-center text-center h-100">
+          <div class="text-white">
+            <h1 class="mb-3">Relentless and simple vehicle rental</h1>
+            <h5 class="mb-4">Best & free of admin charges</h5>
+            <a class="btn btn-outline-light btn-lg m-2" href="{% url 'car_list' %}" role="button"
+              rel="nofollow" target="_blank">See Available Fleet</a>
+            <a class="btn btn-outline-light btn-lg m-2" href="" target="_blank"
+              role="button">See Available Chauffeurs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Background image -->
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main class="mt-5">
+    <div class="container">
+      <!--Section: Content-->
+      <section>
+        <div class="row">
+          <div class="col-md-6 gx-5 mb-4">
+            <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+              <img src="{{ latest_car.image.url }}" class="img-fluid" />
+              <a href="#!">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-md-6 gx-5 mb-4">
+            <h4><strong>Choose the perfect car for you</strong></h4>
+            <p class="text-muted">
+                We have a wide range of cars for every occasion, from off-road adventures to urban commutes.Experience luxury without breaking the bank 
+            </p>
+            <p><strong>Cars Tailored to Your Needs</strong></p>
+            <p class="text-muted">
+                We offer fixed pricing for rental periods and adjustments for fuel used after the rental period. No hidden fees or surprises.
+            </p>
+            <div class="container2 mt-5 mb-5" style="margin-left: -50px">
+              <div class="d-flex justify-content-center row">
+                  <div class="col-md-10">
+                      <div class="row p-2 bg-white border rounded" style="width: 35em, margin-left: 1em;">
+                          <div class="col-md-3 mt-1"><img src="{{ latest_car.image.url }}" id="cardimage" class="img-fluid" /></div>
+                          <div class="col-md-6 mt-1">
+                              <h5><strong>{{ latest_car.make }}  {{ latest_car.car_model }}</strong></h5>
+
+                              <div class="mt-1 mb-1 spec-1"><span><strong>Fuel Type: </strong> <i>{{latest_car.fuel_type}} </i></span><span class="dot"></span><br>
+                            <span><strong>Year: </strong> <i>{{latest_car.model_year}}</i> </span><span class="dot"></span><br>
+                            <span><strong>Fuel Type: </strong> <i>{{latest_car.fuel_type}}</i> </span><span class="dot"></span><br>
+                            <span><strong>Number of seats: </strong> <i>{{latest_car.num_seats}}</i></span><span class="dot"></span><br>
+                            <span><strong>Rental Status: </strong> {% if latest_car.is_booked %}<i>Booked</i>{% else %}<i style="color:green">Available</i>{% endif %}<br></span>
+                            <span></span><br/>
+                         </div>
+                              <p class="text-justify text-truncate para mb-0"><br><br></p>
+                          </div>
+                          <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                              <div class="d-flex flex-row align-items-center">
+                                  <h4 class="mr-1">${{ latest_car.daily_rental_price }}</h4>
+                              </div>
+                              {% if latest_car.has_tracker %}
+                                  <h6 class="text-success">Has Tracker</h6>
+                              {% else %}
+                                  <h6 class="text-success">Has No Tracker</h6>
+                              {% endif %}
+                              <div class="d-flex flex-column mt-4">
+                                  <button class="btn btn-danger btn-sm" type="button">
+                                  <a href="{#% url 'car_detail' %#}">More</a>
+                              </button>
+                                  <button class="btn btn-outline-danger btn-sm mt-2" type="button">
+                                  <a href="{#% url 'main_app:car-reservation' car.id %#}">Book</a>
+                              </button>
+                                  {% if request.user.is_superuser or request.user.is_staff %}
+                                      <button class="btn btn-outline-danger btn-sm mt-2" type="button">
+                                      <a href="{#% url 'main_app:car-update' car.id %#}">Edit</a>
+                                  {% endif %}
+                              </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div>
+
+          </div>
+        </div>
+      </section>
+      <!--Section: Content-->
+
+      <hr class="my-5" />
+
+      <!--Section: Content-->
+      <section class="text-center">
+            <!-- Carousel wrapper -->
+            <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+        
+                    <!-- Carousel wrapper -->
+                    <div id="carouselBasicExample" class="carousel slide carousel-fade" data-mdb-ride="carousel">
+                      <!-- Indicators -->
+                      <div class="carousel-indicators">
+                        {% for index in random_cars %}
+                        <button
+                          type="button"
+                          data-mdb-target="#carouselBasicExample"
+                          data-mdb-slide-to="{{ forloop.counter0 }}"
+                          {% if forloop.first %}class="active"{% endif %}
+                          aria-current="true"
+                          aria-label="Slide {{ forloop.counter }}"
+                        ></button>
+                        {% endfor %}
+                      </div>
+                  
+                      <!-- Inner -->
+                      <div class="carousel-inner">
+                        {% for car in random_cars %}
+                        <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                          <img src="{{ car.image.url }}" class="d-block w-100" alt="{{ car.make }}">
+                          <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ car.make }}</h5>
+                            <p>{{ car.description }}</p>
+                          </div>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <!-- Inner -->
+                  
+                      <!-- Controls -->
+                      <button class="carousel-control-prev" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-mdb-target="#carouselBasicExample" data-mdb-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                    <!-- Carousel wrapper -->
+                  </section>
+
+      <hr class="my-5" />
+
+      <!--Section: Content--> 
+      <section class="mb-5">
+        <h4 class="mb-5 text-center"><strong>Give us some feedback</strong></h4>
+
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-6">
+            <form>
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+              <div class="row mb-4">
+                <div class="col">
+                  <div class="form-outline">
+                    <input type="text" id="form3Example1" class="form-control" />
+                    <label class="form-label" for="form3Example1">First name</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-outline">
+                    <input type="text" id="form3Example2" class="form-control" />
+                    <label class="form-label" for="form3Example2">Last name</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <input type="email" id="form3Example3" class="form-control" />
+                <label class="form-label" for="form3Example3">Email address</label>
+              </div>
+
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <input type="password" id="form3Example4" class="form-control" />
+                <label class="form-label" for="form3Example4">Password</label>
+              </div>
+
+              <!-- Checkbox -->
+              <div class="form-check d-flex justify-content-center mb-4">
+                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" checked />
+                <label class="form-check-label" for="form2Example3">
+                  Subscribe to our newsletter
+                </label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">
+                Submit
+              </button>
+
+              <!-- Register buttons -->
+              <div class="text-center">
+                <p>or sign up with:</p>
+                <button type="button" class="btn btn-primary btn-floating mx-1">
+                  <i id="icon" class="fab fa-facebook-f"></i>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-floating mx-1">
+                  <i id="icon" class="fab fa-google"></i>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-floating mx-1">
+                  <i id="icon" class="fab fa-twitter"></i>
+                </button>
+
+                <button type="button" class="btn btn-primary btn-floating mx-1">
+                  <i id="icon" class="fab fa-github"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <!--Section: Content-->
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="bg-light text-lg-start">
+    <div class="py-4 text-center">
+      <a role="button" class="btn btn-primary btn-lg m-2"
+        href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow" target="_blank">
+        Book a car
+      </a>
+      <a role="button" class="btn btn-primary btn-lg m-2" href="https://mdbootstrap.com/docs/standard/" target="_blank">
+        Check our Fleet
+      </a>
+    </div>
+
+    <hr class="m-0" />
+
+    <div class="text-center py-4 align-items-center">
+      <p>Follow MDB on social media</p>
+      <a href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" class="btn btn-primary m-1" role="button"
+        rel="nofollow" target="_blank">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a href="https://www.facebook.com/mdbootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+        target="_blank">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com/MDBootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+        target="_blank">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://github.com/mdbootstrap/mdb-ui-kit" class="btn btn-primary m-1" role="button" rel="nofollow"
+        target="_blank">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2020 Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/">Sixo Car Rental</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!--Footer-->
+
+  <script>
+
+   </script>
+{% endblock content %}

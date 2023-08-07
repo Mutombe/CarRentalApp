@@ -1,131 +1,146 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
 
-  <div id="myCarousel" style="margin-bottom:0px; text-color:#adb5bd" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    .fit-image {
+        object-fit: cover;
+        height: 200px; /* Set the height to the desired value */
+        }
 
- <div class="carousel-indicators">
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" class= "another" aria-current='true' aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" class= "another3" aria-label="Slide 3"></button>
-    </div>
+    #second{
+        padding-left:10px;
+    }
 
-    <div class="carousel-inner">
+    #third{
+        padding-left:10px;
+    }
 
-        <div class="carousel-item active"
-        style="background-image:url(/static/images/car.jpg); background-size:cover;">
-          <div class ="container">
-                <center>
-                <h1 style="color:#adb5bd">Mercedes Benz</h1>
-                <p style="color:#adb5bd">lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsum</p>
-                <a href="#" class="btn btn-lg btn-primary">Book</a>
-              </center>
-          </div>
-        </div>
-
-        <div class="carousel-item another"
-        style="background-image:url(/static/images/car.jpg); background-size:cover;">
-          <div class ="container">
-                <center>
-                <h1>TEST 2</h1>
-                <p>lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsum</p>
-                <a href="#" class="btn btn-lg btn-primary">More</a>
-              </center>
-          </div>
-        </div>
-
-       <div class="carousel-item another3"
-       style="background-image:url(/static/images/car.jpg); background-size:cover;">
-          <div class ="container">
-                <center>
-                <h1>TEST 3</h1>
-                <p>lorem ipsum lorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum
-                lorem ipsumlorem ipsumlorem ipsum</p>
-                <a href="#" class="btn btn-lg btn-primary">Check Other Offers</a>
-              </center>
-          </div>
-        </div>
-
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-
-<center>
-    <form action="" method="get">
-      <div class="form-row">
-        <div class="col">
-          <input type="submit" value="Search"  class="form-control"> {{ filterset.form }}
-        </div>
-      </div>
-    </form>
-</center>
-
-<div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-center row">
-        <div class="col-md-10">
-            {% for car in cars %}
-            <div class="row p-2 bg-white border rounded">
-                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" src="https://i.pinimg.com/originals/ab/17/0f/ab170fc62f73593201c06d9601ef1b13.jpg"></div>
-                <div class="col-md-6 mt-1">
-                    <h5>{{ car.mark }} {{ car.model }}</h5>
-                    <div class="d-flex flex-row">
-                        <span>{{ car.id }}</span>
+    button.save-button {
+        border: none;
+    }
+</style>
+</br>
+<body class="m-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 mt-4">
+                
+                    <div class="card" style="width:18rem;">
+                        <div class="card-header">
+                            Cars
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">All Car</li>
+                            <li class="list-group-item">Latest Cars</li>
+                            <li class="list-group-item">Promotion</li>
+                            <li class="list-group-item">Review</li>
+                            <a href="{% url 'car_add' %}" class="btn btn-dark btn-block btn-sm m-1">Add Car</a>
+                        </ul>
                     </div>
-                    <div class="mt-1 mb-1 spec-1"><span>Engine Power: {{car.car_engine_power}} KM </span><span class="dot"></span>
-                  <span>Year: {{car.model_year}} </span><span class="dot"></span><span>Engine Type: {{car.type_of_car_engine}} </span><span class="dot"></span><br>
-                  <span>Number of seats: {{car.num_seats}}</span><span class="dot"></span><span> Air Conditioning: {{car.air_conditioner}}<br></span><span>Place: {{car.facility_allocation}}</span><br/>
-               </div>
-                    <p class="text-justify text-truncate para mb-0">{{ car.note }}<br><br></p>
-                </div>
-                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
-                    <div class="d-flex flex-row align-items-center">
-                        <h4 class="mr-1">{{ car.daily_rental_cost }}</h4>
-                  <span class="strike-text">$200.99</span>
+            </div>
+
+            <div class="col-md-9">
+                <div class="row m-3">
+                    {% for car in cars %}
+                    <div class="col-md-5">
+                        <div class="card my-2">
+                            <a href="{% url 'photo' pk=car.pk %}">
+                                <img class="card-img-top fit-image" src="{{ car.image.url }}" alt="Card image cap">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <a href="{% url 'car_detail' pk=car.pk %}"><small>{{ car.make }}</small></a>
+                                     {% if request.user.is_authenticated %}
+                                        <span id="second"><button class="save-button" onclick="saveCar({{ car.id }})"><small>Save</small></button></span>
+                                    {% endif %}
+                                     
+                                    <span class="pointer">
+                                        {% if request.user in car.likes.users.all%}
+                                        <!-- already liked-->
+                                        <a href={% url 'car_review' car_id=car.id review='like' %}> <i
+                                           data-toggle="tooltip" data-placement="bottom" title="Unlike"
+                                           class="like fas fa-thumbs-up pr-2">
+                                        <span>{{car.get_total_likes}}</span>
+                                        </i>
+                                        </a>
+                                        {% else %}
+                                        <!--not liked-->
+                                        <a href={% url 'car_review' car_id=car.id review='like' %}><i
+                                           data-toggle="tooltip" data-placement="bottom" title="Like"
+                                           class="default-icon fas fa-thumbs-up pr-2">
+                                        <span>{% if car.get_total_likes  %}{{car.get_total_likes}} {% else %} 0
+                                        {% endif %}</span></i>
+                                        </a>
+                                        {% endif %}
+                                     </span>
+                                     <span class="ml-3 pointer">
+                                     {% if request.user in car.dis_likes.users.all %}
+                                     <a href={% url 'car_review' car_id=car.id review='dis_like' %}><i
+                                        data-toggle="tooltip" data-placement="bottom" title="i dislike this"
+                                        class="dislike fas fa-thumbs-down pr-2">
+                                     <span>{{car.get_total_dis_likes}}</span></i>
+                                     </a>
+                                     {% else %}
+                                     <a href={% url 'car_review' car_id=car.id review='dis_like' %}><i
+                                        data-toggle="tooltip" data-placement="bottom" title="i dislike this "
+                                        class="default-icon fas fa-thumbs-down pr-2">
+                                     <span>{% if  car.get_total_dis_likes %}{{car.get_total_dis_likes}}
+                                     {% else %} 0 {% endif %}</span></i>
+                                     </a>
+                                     {% endif %}
+                                     </span>
+
+                                    <span id="share"><small>Share</small></span>
+                                </p>
+                            </div>
+                            <a href="{% url 'car_detail' pk=car.pk %}" class="btn btn-outline-dark btn-sm m-1">View</a>
+                        </div>
                     </div>
-                    <h6 class="text-success">{{ car.car_is_rented }} </h6>
-                    <div class="d-flex flex-column mt-4">
-                        <button class="btn btn-danger btn-sm" type="button">
-                        <a href="{% url 'main_app:cars_detail' car.id %}">More</a>
-                    </button>
-                        <button class="btn btn-outline-danger btn-sm mt-2" type="button">
-                        <a href="{% url 'main_app:car-reservation' car.id %}">Book</a>
-                    </button>
-                        {% if request.user.is_superuser or request.user.is_staff %}
-                            <button class="btn btn-outline-danger btn-sm mt-2" type="button">
-                            <a href="{% url 'main_app:car-update' car.id %}">Edit</a>
-                        {% endif %}
-                    </button>
+                    {% endfor %}
+
+                        </div>
                     </div>
                 </div>
             </div>
-         {% endfor %}
         </div>
     </div>
-</div>
-<div>
+</body>
 
-</div>
 
-<center>
-    <br/><br/>
-    {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-    {% endif %}
-    Side{{ page_obj.number }}
-    {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Next</a>
-    {% endif %}
-</center>
 
+<script>
+function saveCar(carId) {
+fetch(`/save_car/${carId}/`)
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Update the page to reflect the saved car
+      const saveButton = document.querySelector('.save-button');
+      saveButton.textContent = 'Saved';
+      saveButton.disabled = true;
+    }
+  });
+}
+
+function likeCar(carId, isLike) {
+  const likeButton = document.querySelector(`.thumbs-${isLike ? 'up' : 'down'}`);
+  const dislikeButton = document.querySelector(`.thumbs-${isLike ? 'down' : 'up'}`);
+  fetch(`/like_car/${carId}/${isLike ? 'true' : 'false'}/`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Update the page to reflect the new like/dislike count
+        const likesCount = document.querySelector('.likes');
+        const dislikesCount = document.querySelector('.dislikes');
+        likesCount.textContent = data.likes;
+        dislikesCount.textContent = data.dislikes;
+        // Toggle the active class on the buttons
+        likeButton.classList.toggle('active');
+        dislikeButton.classList.remove('active');
+      }
+    });
+}
+
+</script>
 {% endblock %}
+

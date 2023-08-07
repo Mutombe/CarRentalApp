@@ -28,15 +28,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #Local 
-    'crispy_forms',
-    'the_system',
-    'rest_framework',
+    'user',
     'contact',
     'car_owner',
-    'cars',
-    'user',
-    'payments',
+    'chauffeur',
     'rental',
+    'cars',
+    'home',
+    'payments',
+    'crispy_forms',
+    'rest_framework',
+    'datetimepicker',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'  
@@ -118,9 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-BASE_URL = "home"
-LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'home'
+BASE_URL = "landingpage"
+LOGIN_REDIRECT_URL = 'landingpage'
+LOGOUT_REDIRECT_URL = 'landingpage'
 PROJECT_ROOT = os.path.join(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
@@ -132,3 +134,17 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Paynow 
+PAYNOW_INTEGRATION_ID = '16389'
+PAYNOW_INTEGRATION_KEY = '99b04904-d955-413c-879a-8567d3e855ba'
+PAYNOW_RETURN_URL = 'http://localhost:8000/payment/complete'
+PAYNOW_RESULT_URL = ''
+
+#SMTP Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'simbarashemutombe1@gmail.com'
+EMAIL_HOST_PASSWORD = 'Simbarashe2001'

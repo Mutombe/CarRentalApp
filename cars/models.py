@@ -5,20 +5,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from user.models import CustomUser
-
-def validate_year(value):
-    if value < 2000:
-        raise ValidationError(
-            _(f'{value} this year is not supported, it must be greater than 2000'),
-            params= {'value': value},
-        )
-
-def validate_car_engine_power(value):
-    if value <= 0:
-        raise ValidationError(
-            _(f'{value} is too small, it must be greater than 0'),
-            params={'value': value},
-        )
+from django.utils import timezone
 
 def daily_rental_cost(value):
     if value <= 0:
@@ -27,31 +14,34 @@ def daily_rental_cost(value):
             params={'value': value},
         )
 
-
 def validate_num_of_passengers(value):
-    if value > 4:
+    if value > 8:
         raise ValidationError(
-            _(f'{value} is too much passengers, it must be less than 5'),
+            _(f'{value} is too much passengers, it must be less than 8'),
             params={'value': value},
         )
         
 def car_photo_upload_path(instance, filename):
     return f'static/media/cars/{instance.owner.username}/{filename}'
 
+
 class Car(models.Model):
     categories = [
-        ("P", "Petrol"),
-        ("D", "Diesel"),
-        ("G", "Gas"),
-        ("H", "Hybrid"),
-        ("E", "Electric"),
-    ]
+        ("Petrol", "Petrol"),
+        ("Diesel", "Diesel"),
+        ("Gas", "Gas"),
+        ("Hybrib", "Hybrid"),
+        ("Electric", "Electric"),
+    ]  
 
     id = models.AutoField(null=False, primary_key=True)
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, default=None)
+    image = models.ImageField(upload_to='static/media/cars/images', blank=False, default='/static/media/cars/images/logo.png')
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=False)
     make = models.CharField(max_length=50, null=False, blank=False)
     car_model = models.CharField(max_length=20, null=False, blank=False)
-    model_year = models.IntegerField(default=0, validators=[validate_year])
+    city = models.CharField(max_length=100, null=True, blank=False)
+    residence = models.CharField(max_length=100, null=True, blank=False)
+    model_year = models.IntegerField(default=0)
     color = models.CharField(max_length=20, blank= False)
     num_seats = models.PositiveSmallIntegerField(null=False, blank=False, validators=[validate_num_of_passengers])
     capacity = models.CharField(max_length=100)
@@ -60,10 +50,18 @@ class Car(models.Model):
     has_tracker = models.BooleanField(default=False)
     daily_rental_price = models.DecimalField(decimal_places=2, max_digits=6, default=Decimal("0.00"),validators=[daily_rental_cost])
     late_return_fee_per_hr = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal("0.00"),null=True, blank=True)
+    ecocash_rate = models.DecimalField(max_digits=5, decimal_places=2,default=Decimal("0.00"),null=True, blank=True)
     mileage = models.PositiveIntegerField(null=True, blank=True)
-    fuel_type = models.CharField(max_length=1, choices=categories)
+    fuel_type = models.CharField(max_length=10, choices=categories)
     like = models.IntegerField(default=0)
-    description = models.CharField(max_length=500,null=True, default=True)
+    description = models.CharField(max_length=500,null=True, default=None)
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def get_total_likes(self):
+        return self.likes.users.count()
+
+    def get_total_dis_likes(self):
+        return self.dis_likes.users.count()
 
     def __str__(self):
         return self.make
@@ -71,32 +69,45 @@ class Car(models.Model):
     def get_url(self):
         return reverse('car_detail', args = (self.id))
     
-      
+    #def get_image(self, index=0):
+     #   if index < len(self.image):
+      #      return self.image[index]
+       # else:
+        #    return None
+        
+class SavedCars(models.Model):
+    car = models.ForeignKey(
+        Car, related_name='saved_car', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        CustomUser, related_name='saved', on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)
 
+    def __str__(self):
+        return self.job.title
+    
 
-class CarImage(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="photos")
-    image = models.FileField(upload_to=car_photo_upload_path , blank=False, default='/static/media/images/logo.png')
+    
+class Like(models.Model):
+    ''' like  car'''
+    car = models.OneToOneField(Car, related_name="likes", on_delete=models.CASCADE)
+    users = models.ManyToManyField(CustomUser, related_name='requirement_car_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.car.make)[:30]
+
+class DisLike(models.Model):
+    ''' Dislike  car '''
+    car = models.OneToOneField(Car, related_name="dis_likes", on_delete=models.CASCADE)
+    users = models.ManyToManyField(CustomUser, related_name='requirement_car_dis_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.car.make)[:30]
+
     
     
-    def get_image(self, index=0):
-        if index < len(self.photo):
-            return self.photo[index]
-        else:
-            return None
 
-class CarsReservationHistory(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    day1 = models.DateTimeField()
-    day2 = models.DateTimeField()
-    day3 = models.DateTimeField()
-    day4 = models.DateTimeField()
-    day5 = models.DateTimeField()
-
-    class Meta:
-        verbose_name = "CarHistory"
-        verbose_name_plural = "CarsHistory"
-
-    def __int__(self):
-        return self.car
 

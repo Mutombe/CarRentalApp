@@ -1,0 +1,39 @@
+<form method="get">
+    <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.GET.first_name }}">
+    </div>
+    <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.GET.last_name }}">
+    </div>
+    <div class="form-group">
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ request.GET.phone_number }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</form>
+
+{% if chauffeurs %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Daily Fee</th>
+                <th>Select</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chauffeur in chauffeurs %}
+                <tr>
+                    <td>{{ chauffeur.first_name }}</td>
+                    <td>{{ chauffeur.last_name }}</td>
+                    <td>{{ chauffeur.phone_number }}</td>
+                    <td>{{ chauffeur.daily_fee }}</td>
+                    <td>
+                        <a href="{% url 'rental_create' car.pk %}?chauffeur={{ chauffeur.pk }}" class="btn btn-primary">Select</a>
+                    </td>
+                </tr>
+            {% endfor %}

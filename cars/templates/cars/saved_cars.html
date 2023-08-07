@@ -1,0 +1,9 @@
+{% if saved_cars %}
+  <ul>
+    {% for saved_car in saved_cars %}
+      <li>{{ saved_car.car.name }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You have not saved any cars yet.</p>
+{% endif %}

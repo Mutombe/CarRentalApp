@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import CustomUser, UserProfile
 
 
 
@@ -18,3 +18,9 @@ class UserOverview(admin.ModelAdmin):
     ordering = ('-date_joined',)
 
 admin.site.register(CustomUser, UserOverview)
+
+class ProfileOverview(admin.ModelAdmin):
+    list_display = ('id', 'user', 'profile_pic', 'phone_number', 'city', 'address')
+    search_fields = ('city', 'address')  # set search_fields to a tuple of valid fields
+
+admin.site.register(UserProfile, ProfileOverview)

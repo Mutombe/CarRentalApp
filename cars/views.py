@@ -1,155 +1,220 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views import View
+from django.views.decorators.http import require_GET
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from rest_framework import viewsets
-from django.views.generic import \
-    (DetailView,
-    ListView)
-
-from .filters import CarFilter
-from .forms import CarsForm #CarsReservationHistoryForm
-from .models import Car, CarsReservationHistory
-from .serializers import CarsSerializer, CarsReservationHistorySerializer
-
-class CarViewSet(viewsets.ModelViewSet):
-    queryset = Car.objects.all()
-    serializer_class = CarsSerializer
-
-def car_detail(request, car_id):
-    car = get_object_or_404(Car, id=car_id)
-    image = car.photo
-    return render(request, 'car_detail.html', {'car': car, 'image': image})
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Car, SavedCars
+from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import DeleteView, ListView
+from django.views.generic.edit import UpdateView, DeleteView
+#from .filters import CarFilter
+from .models import Like, DisLike
+from .forms import CarsForm 
+from django.http import JsonResponse
+from django import template
 
 
-def car_filter(request):
-    car_list = Car.objects.all()
-    car_filter = CarFilter(request.GET, queryset=car_list)
-    return render(request, 'cars/car_filter.html', {'filter': car_filter})
-
-
-def cars_lists(request):
-    car = Car.objects.all()
-    query =request.GET.get('q')
-    if query:
-        car = car.filter(
-            Q(make__icontains=query) |
-            Q(car_model__icontains=query) |
-            Q(num_seats__icontains=query) |
-            Q(daily_rental_price__icontains=query)
-        )
-
-    paginator = Paginator(car, 12)  # Show 15 contacts per page
-    page = request.GET.get('page')
-    try:
-        car = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        car = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        car = paginator.page(paginator.num_pages)
+def all_cars(request):
+    cars = Car.objects.all()
     context = {
-        'car': car,
+        'cars':cars
     }
-    return render(request, 'cars/cars_list.html', context)
+    return render(request, 'cars/cars.html', context)
+  
+  
+def car_detail(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    save_button = 0
+    if SavedCars.objects.filter(user=request.user).filter(car=car).exists():
+        save_button = 1
+    photo = car.image
+    context = {
+        'car':car,
+        'photo': photo
+    }
+    return render(request, 'cars/car_profile.html', context)
+
+@login_required
+def save_car(request, id):
+    user = request.user
+    car = get_object_or_404(Car, id=id)
+    saved, created = SavedCars.objects.get_or_create(car=car, user=user)
+    return HttpResponseRedirect('/job/{}'.format(car.id))
+
+
+def saved_cars(request):
+    cars = SavedCars.objects.filter(
+        user=request.user).order_by('-date_posted')
+    return render(request, 'cars/saved_cars.html', {'cars': cars, 'candidate_navbar': 1})
+
+
+register = template.Library()
+@register.simple_tag(takes_context=True)
+def is_saved(context, car):
+    if context['user'].is_authenticated:
+        saved_car = SavedCars.objects.filter(user=context['user'], car=car).first()
+        return saved_car is not None
+    else:
+        return False
+
+
+@login_required
+def save_car(request, car_id):
+    if request.user.is_authenticated:
+        car = get_object_or_404(Car, id=car_id)
+        SavedCars.objects.create(user=request.user, car=car)
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False})
+
+def saved_cars(request):
+    if request.user.is_authenticated:
+        saved_cars = SavedCars.objects.filter(user=request.user).order_by('-saved_at')
+        return render(request, 'saved_cars.html', {'saved_cars': saved_cars})
+    else:
+        return render(request, 'saved_cars.html', {'saved_cars': []})
+
+
+@login_required
+def remove_car(request, id):
+    user = request.user
+    car = get_object_or_404(Car, id=id)
+    saved_car = SavedCars.objects.filter(car=car, user=user).first()
+    saved_car.delete()
+    return HttpResponseRedirect('/saved_cars/{}'.format(car.id))
+
+def photo(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    context = {
+        'car':car
+    }
+    return render(request, 'cars/photo.html', context)
+
+
+
+def like_car(request, car_id, is_like):
+    if request.user.is_authenticated:
+        car = get_object_or_404(Car, id=car_id)
+        like, created = CarLike.objects.get_or_create(car=car, user=request.user)
+        if created:
+            like.is_like = is_like
+            like.save()
+        elif like.is_like != is_like:
+            like.is_like = is_like
+            like.save()
+        else:
+            like.delete()
+        likes = car.likes.filter(is_like=True).count()
+        dislikes = car.likes.filter(is_like=False).count()
+        return JsonResponse({'success': True, 'likes': likes, 'dislikes': dislikes})
+    else:
+        return JsonResponse({'success': False})
+
+@login_required
+class UpdateCarLikes(LoginRequiredMixin, View):
+    login_url = 'logins'
+    redirect_field_name = 'next'
+
+    def get(self, request, *args, **kwargs):
+        car_id = self.kwargs.get('car_id', None)
+        review = self.kwargs.get('review', None) # like or dislike button clicke
+        car = get_object_or_404(Car, id=car_id)
+        cars = Car.objects.all()
+
+        try:
+            # If child DisLike model doesnot exit then create
+            car.dis_likes
+        except Car.dis_likes.RelatedObjectDoesNotExist as identifier:
+            DisLike.objects.create(car = car)
+
+        try:
+            # If child Like model doesnot exit then create
+            car.likes
+        except Car.likes.RelatedObjectDoesNotExist as identifier:
+            Like.objects.create(car = car)
+
+        if review.lower() == 'like':
+
+            if request.user in car.likes.users.all():
+                car.likes.users.remove(request.user)
+            else:    
+                car.likes.users.add(request.user)
+                car.dis_likes.users.remove(request.user)
+
+        elif review.lower() == 'dis_like':
+
+            if request.user in car.dis_likes.users.all():
+                car.dis_likes.users.remove(request.user)
+            else:    
+                car.dis_likes.users.add(request.user)
+                car.likes.users.remove(request.user)
+        else:
+            return HttpResponseRedirect(reverse('car_list'))
+        return HttpResponseRedirect(reverse('car_list'))
+
+
+
+class CarUpdateView(LoginRequiredMixin, UpdateView):
+    model = Car
+    form_class = CarsForm
+    template_name = '.html'
+
+class CarDeleteView(LoginRequiredMixin, DeleteView):
+    model = Car
+    success_url = reverse_lazy('dashboard')
+
+
+class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Car
+    success_url = reverse_lazy('car_list')
+
+    def test_func(self):
+        car = self.get_object()
+        return self.request.user == car.owner
+
+
+@require_GET
+def search_cars(request):
+    search_term = request.GET.get('search')
+
+    if search_term:
+        results = Car.objects.filter(make__icontains=search_term) | Car.objects.filter(car_model__icontains=search_term) | Car.objects.filter(color__icontains=search_term)
+
+        search_results = [
+            {
+                'make': car.make, 
+                'car_model': car.car_model, 
+                'color': car.color,
+            } for car in results
+        ]
+
+        return JsonResponse(search_results, safe=False)
+    else:
+        return JsonResponse([], safe=False)
+    
+def index(request):
+    return render(request, 'cars/search.html')
+from django.http import JsonResponse
+
 
 class CarListView(ListView):
-    template_name = 'cars/cars.html'
     model = Car
+    template_name = 'cars/car_list.html'
     context_object_name = 'cars'
-    paginate_by = 3
-    filterset_class = CarFilter
+    paginate_by = 10
 
-    def get_query(self):
-        queryset = super().get_queryset()
-        self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
-        return self.filterset.qs.distinct()
+    def get_queryset(self):
+        location = self.request.GET.get('location')
+        available = self.request.GET.get('available')
+        queryset = super(CarListView, self).get_queryset()
+        if location:
+            queryset = queryset.filter(car_location__name=location)
+        if available:
+            queryset = queryset.filter(is_booked=False)
+        return queryset
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['filterset'] = self.filterset
-        return context
-
-def car_list(request):
-    pg = Paginator(Car.objects.all().order_by('model_year'), 2)
-    page_number = request.GET.get('page')
-    try:
-        cars = pg.page(page_number)
-    except EmptyPage:
-        cars = pg.page(pg.num_pages)
-    except PageNotAnInteger:
-        cars = pg.page(1)
-    return render(request, 'cars/cars.html', {'cars': cars})
-
-#@staff_member_required
-#def add_car(request):
- #   submitted = False
-  #  if request.method == "POST":
-   #     form = CarsForm(request.POST)
-    #    if form.is_valid():
-     #       form.save()
-      #      return HttpResponseRedirect(redirect_to=reverse('main_app:add-car'))
-    #else:
-     #   form = CarsForm
-      #  if 'submitted' in request.GET:
-       #     submitted = True
-    #return render(request, "cars/add_car.html", {'form': form, 'submitted': submitted})
-
-#def Profile_View(request, pk):
- #   car = get_object_or_404(Car, pk=pk)
-  #  rentals = Rental.objects.filter(car=car)
-   # return render(request, 'car_profile.html', {'car': car, 'rentals': rentals})
-
-
-#def search_car(request):
- #   if request.method == "POST":
-  #      search = request.POST.get('car_search')
-   #     cars = Car.objects.filter(Q(brand=search) | Q(model=search))
-    #    return render(request, "cars/search_car.html", {'query': search, 'query_base': cars})
-    #else:
-     #   return render(request, "cars/search_car.html", {})
-
-
-#@login_required(login_url='/user/login/')
-#def get_reservation_view(request, cars_id, *args, **kwargs):
- #   car = Car.objects.get(pk = cars_id)
-  #  if car.is_booked:
-   #     return HttpResponse("Vehicle is booked")
-    #form = CarsReservationHistoryForm()
-    #if request.POST:
-     #   form = CarsReservationHistoryForm(request.POST)
-      #  if form.is_valid():
-       #     form.save(commit=False)
-        #    day1 = form.cleaned_data.get("day1")
-         #   day2 = form.cleaned_data.get("day2")
-          #  day3 = form.cleaned_data.get("day3")
-           # day4 = form.cleaned_data.get("day4")
-            #day5 = form.cleaned_data.get("day5")
-            #form.save(commit=True)
-            #return redirect("main_app:cars")
-    #return render(request, "cars/reservation.html", {'cars': car, 'form': form})
-
-#@staff_member_required
-#def update_view(request, cars_id):
- #   car = Car.objects.get(pk=cars_id)
-  #  form = CarsForm(request.POST or None, instance=car)
-   # if form.is_valid():
-    #    form.save()
-     #   return redirect('main_app:cars')
-    #return render(request, 'cars/cars_info_update.html', {'car': car, 'form': form})
-
-#def create_car_view(request):
- #   if request.method == 'POST':
-  #      form = CarCreationForm(request.POST, request.FILES)
-   #     if form.is_valid():
-    #        car = form.save(commit=False)
-     #       car.Owner = request.user
-      #      car.save()
-       #     return redirect('car_owner_dashboard.html')
-    #else:
-     #   form = CarCreationForm()
-    #return render(request, 'create_car.html', {'form': form})

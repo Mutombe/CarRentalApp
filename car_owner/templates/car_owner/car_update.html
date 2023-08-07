@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .container{
+    font-family: 'REM', sans-serif;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .form-group input:hover,
+  .form-group select:hover,
+  .form-group textarea:hover {
+    border-color: #999;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #555;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-primary {
+    margin-top: 10px;
+  }
+
+  .head{
+    font-family: 'Kanit', sans-serif
+  }
+</style>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <h1 class="head text-center">Edit : {{ car }}</h1>
+        <hr>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.image.id_for_label }}">Image</label>
+              {{ form.image }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.make.id_for_label }}">Make</label>
+              {{ form.make }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.car_model.id_for_label }}">Car Model</label>
+              {{ form.car_model }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.daily_rental_price.id_for_label }}">Daily Rental Price</label>
+              {{ form.daily_rental_price }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.late_return_fee_per_hr.id_for_label }}">Late Return Fee per Hour</label>
+              {{ form.late_return_fee_per_hr }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.ecocash_rate.id_for_label }}">Ecocash Rate</label>
+              {{ form.ecocash_rate }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.plate_number.id_for_label }}">Plate Number</label>
+              {{ form.plate_number }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.mileage.id_for_label }}">Mileage</label>
+              {{ form.mileage }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.model_year.id_for_label }}">Model Year</label>
+              {{ form.model_year }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.fuel_type.id_for_label }}">Fuel Type</label>
+              {{ form.fuel_type }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.color.id_for_label }}">Color</label>
+              {{ form.color }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="{{ form.num_seats.id_for_label }}">Number of Seats</label>
+              {{ form.num_seats }}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="{{ form.description.id_for_label }}">Description</label>
+              {{ form.description }}
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <input type="submit" value="Edit" class="btn btn-primary col-md-12">
+{% endblock %}

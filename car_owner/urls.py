@@ -1,16 +1,15 @@
 from django.urls import path
+from .views import CarUpdateView #, ProfileUpdateView
 from . import views
-from .views import (
-    CarAddView,
-    CarUpdateView,
-    CarDeleteView,
-)
 
 
 
 urlpatterns = [
-    path('dashboard', views.owner_page, name='dashboard'),
-    path('add/', CarAddView.as_view(), name="add"),
-    path('update', CarUpdateView.as_view(), name='update'),
-    path('delete', CarDeleteView.as_view(), name='delete'),
+    path('dash/', views.dashboard, name="dash"),
+    path('car_add/', views.car_add, name='car_add'),
+    path('profile/', views.car_owner_profile, name='profile'),
+    path('profile/add/', views.add_profile, name='add_profile'),
+    path('cars/<int:pk>', views.delete_car, name='delete_car'),
+    path('edit/<int:pk>',CarUpdateView.as_view()),
+    path('profile/edit/', views.owner_edit_profile, name='profile_edit'),
 ]

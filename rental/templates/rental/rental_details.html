@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Rental Details</h1>
+<p>Car: {{ rental.car.make }} {{ rental.car.model }}</p>
+<p>Start Date: {{ rental.start_date }}</p>
+<p>End Date: {{ rental.end_date }}</p>
+{% if rental.chauffeur %}
+  <p>Chauffeur: {{ rental.chauffeur.name }}</p>
+{% endif %}
+<p>Total Cost: ${{ rental.total_cost }}</p>
+{% endblock %}

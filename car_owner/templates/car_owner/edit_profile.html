@@ -1,45 +1,7 @@
 {% extends 'base.html' %}
 
-{% block content %}  
-<style>
-    .form-group:hover .form-label {
-      color: #007bff;
-    }
-    .form-group:hover .form-control {
-      border-color: #007bff;
-    }
-    .input-group-text:hover {
-      cursor: pointer;
-      background-color: #007bff;
-      color: #ffffff;
-      border-color: #007bff;
-    }
-    .profile-pic {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .profile-pic img {
-      max-width: 100%;
-      height: auto;
-      object-fit: contain;
-      border-radius: 50%;
-      margin-bottom: 0.5rem;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    }
-    .profile-pic label {
-      font-weight: bold;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-    .profile-pic input[type="file"] {
-      display: none;
-    }
-    .profile-pic .btn {
-      margin-top: 0.5rem;
-    }
-</style>
+{% block content %}   
+<link rel="stylesheet" href="/static/css/edit_profile.css">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">

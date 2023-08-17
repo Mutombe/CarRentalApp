@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method='get'>
+        {{ filter.form.as_p }}
+        <button type="submit"> Search </button>
+    </form>
+    <ul>
+        {% for car in filter.qs %}
+            <li> {{ car.make }} - {{ car.car_model }} - {{ car.model_year }} </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+<div class="row">
+    <div class = "col">
+        <div class="card card-body">
+            <form method="GET">
+                {{filter.form}}
+            <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>

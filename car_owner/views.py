@@ -1,21 +1,19 @@
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
 from cars.models import Car
-from .forms import CarForm, OwnerProfileForm
+from chauffeur.models import Chauffeur
+from .forms import CarForm, ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DeleteView
 from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import CarOwnerProfile
 from user.models import UserProfile
 from django.contrib import messages
 
 
 def car_add(request):
-    if not request.user.is_car_owner:
-        raise Http404("You are not authorized to view this page")
     if request.method == 'POST':
         form = CarForm(request.POST, request.FILES)
         if form.is_valid():
@@ -30,7 +28,7 @@ def car_add(request):
 
 @login_required
 def delete_car(request, pk):
-    car = Car.objects.get(pk=pk, owner=request.user)
+    car = Car.objects.get(pk=car.pk, owner=request.user)
     if request.method == 'POST':
         car.delete()
     return redirect('dash')
@@ -49,44 +47,39 @@ class CarUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'car_owner/car_update.html'
     success_url = reverse_lazy('dash')
 
-def car_owner_profile(request):
-    try: 
-        profile = UserProfile.objects.get(user=request.user)
-        context = {
-            'profile': profile,
-        }
-        return render(request, 'car_owner/car_owner_profile.html', context)
-    except UserProfile.DoesNotExist:
-        return redirect('add_profile')
+def profile(request):
+    chauffeur_details = Chauffeur.objects.filter(driver=request.user)
+    context = {'chauffeur_details': chauffeur_details}
+    return render(request, 'car_owner/profile.html', context)
 
 def add_profile(request):
     if request.method == 'POST':
-        form = OwnerProfileForm(request.POST)
+        form = ProfileForm(request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
             return redirect('profile') 
     else:
-        form = OwnerProfileForm()
+        form = ProfileForm()
     context = {
         'form': form,
     }
     return render(request, 'car_owner/add_profile.html', context)
 
-
-
-
 def owner_edit_profile(request):
-    if request.method == 'POST':
-        form = OwnerProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
+    if request.user.profile:
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                return redirect('profile')
+        else:
+            form = ProfileForm(instance=request.user.profile)
+        return render(request, 'car_owner/edit_profile.html', {'form': form})
     else:
-        form = OwnerProfileForm(instance=request.user.profile)
-    return render(request, 'car_owner/edit_profile.html', {'form': form})
-
+        return redirect('add_profile')
+    
 # Multi image approach
 
 #class UploadView(FormView):

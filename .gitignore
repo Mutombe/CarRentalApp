@@ -1,2 +1,4 @@
-cvenv
+venv
 migrations
+.pytest_cache
+.vscode

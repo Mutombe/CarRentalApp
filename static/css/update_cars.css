@@ -1,0 +1,128 @@
+    .fit-image { 
+        object-fit: cover;
+        height: 200px; /* Set the height to the desired value */
+        }
+        img.img-thumbnail.fit-image {
+            padding: 0;
+            margin-left: 1em;
+        }
+
+    .current-image {
+        border: groove;
+        border-left-width: medium;
+        -webkit-text-stroke-width: thin;
+        width: max-content;
+        padding-inline: 0.4em;
+        border-radius: 0.3em;
+        margin-bottom: 0.4em;
+        border-color: azure;
+    }
+        
+
+    .img-thumbnail { 
+        width: 90px;; 
+        height: 5em; 
+        object-fit: inherit; 
+        margin-bottom: 1px; 
+        border-radius: 0.4em;
+    } 
+
+    input#id_description {
+        width: 14em;
+        border: groove;
+        border-color: azure;
+        margin-right: 5.6em;
+        border-radius: 0.4em;
+    }
+
+    input#id_num_seats {
+        margin-left: 1em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_color {
+        margin-right: 5em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    select#id_fuel_type {
+        width: 12em;
+        margin-left: 3.5em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_model_year {
+        margin-right: 7em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_plate_number {
+        margin-left: 2em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_mileage {
+        margin-right: 6em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+    input#id_ecocash_rate {
+        margin-left: -2em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_late_return_fee_per_hr {
+        margin-right: 13em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_car_model {
+        margin-right: 5.3em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+    input#id_daily_rental_price {
+        margin-left: 1.57em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+
+
+    input#id_make {
+        margin-left: 5.7em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+    input#id_image {
+        margin-left: 4.5em;
+        border: groove;
+        border-color: azure;
+        border-radius: 0.4em;
+    }
+    form {
+        background: #f0f2f3;
+        padding-top: 2em;
+        padding-bottom: 2em;
+        margin-left: 2em;
+        margin-right: 2em;
+        border-radius: 0.4em;
+    }

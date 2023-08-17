@@ -1,9 +1,25 @@
-{% if saved_cars %}
-  <ul>
-    {% for saved_car in saved_cars %}
-      <li>{{ saved_car.car.name }}</li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>You have not saved any cars yet.</p>
-{% endif %}
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/saved_cars.css">
+
+<br><br><br>
+
+{% for car in saved_cars %}
+
+    <p>{{ car.make }}</p>
+    <p>{{ car.car_model }}</p>
+    <p>{{ car.color }}</p>
+
+{% empty %}
+  <p style="margin-left:20px;">No saved cars.</p>
+
+  <br><br>
+  <br><br>
+
+  <a href="{% url 'car_list' %}" class="btn btn-dark btn-block btn-sm m-1">See Cars</a>
+{% endfor %}
+<br><br>
+  <br><br>
+<a href="{% url 'car_list' %}" style="width:500px; justify-items: center;"class="btn btn-dark btn-sm m-1">See Cars</a>
+
+{% endblock %}

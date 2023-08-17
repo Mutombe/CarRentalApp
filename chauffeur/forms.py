@@ -8,7 +8,8 @@ class ChauffeurForm(forms.ModelForm):
                   'profile_photo',
                   'first_name', 
                   'last_name', 
-                  'phone_number', 
+                  'phone_number',
+                  'email',
                   'driver_experience', 
                   'ecocash_rate', 
                   'daily_fee'

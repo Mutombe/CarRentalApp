@@ -1,0 +1,45 @@
+h1 {
+    padding-top: 1em;
+      margin-left: 3.9em;
+      margin-top: -1.4em;
+  }
+  .fit-image {
+    object-fit: cover;
+    height: 200px; /* Set the height to the desired value */
+  }
+
+  .col-20.head {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 9em;
+}
+
+/* Styles for screens smaller than 600px */
+@media (max-width: 600px) {
+  .container2 {
+    display: none; /* Hide content2 on smaller screens */
+}
+
+.pnumber{
+  display: none;
+}
+
+.model{
+  display: none;
+}
+
+.model_prop{
+  display: none;
+}
+
+.pnumber_prop{
+  display: none;
+}
+
+h1 {
+  padding-top: 1em;
+  margin-left: 1em;
+  margin-top: -1.4em;
+}
+
+}

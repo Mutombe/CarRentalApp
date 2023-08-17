@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+    <div class="dropdown-menu position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3 shadow-lg" data-bs-theme="light">
+      <nav class="col-lg-8">
+        <ul class="list-unstyled d-flex flex-column gap-2">
+          <li>
+            <a href="#" class="btn btn-hover-light rounded-2 d-flex align-items-start gap-2 py-2 px-3 lh-sm text-start">
+              <svg class="bi" width="24" height="24"><use xlink:href="#image-fill"></use></svg>
+              <div>
+                <strong class="d-block">Main product</strong>
+                <small>Take a tour through the product</small>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="btn btn-hover-light rounded-2 d-flex align-items-start gap-2 py-2 px-3 lh-sm text-start">
+              <svg class="bi" width="24" height="24"><use xlink:href="#music-note-beamed"></use></svg>
+              <div>
+                <strong class="d-block">Another product</strong>
+                <small>Explore this other product we offer</small>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="btn btn-hover-light rounded-2 d-flex align-items-start gap-2 py-2 px-3 lh-sm text-start">
+              <svg class="bi" width="24" height="24"><use xlink:href="#question-circle"></use></svg>
+              <div>
+                <strong class="d-block">Support</strong>
+                <small>Get help from our support crew</small>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="d-none d-lg-block vr mx-4 opacity-10">&nbsp;</div>
+      <hr class="d-lg-none">
+      <div class="col-lg-auto pe-3">
+        <nav>
+          <ul class="d-flex flex-column gap-2 list-unstyled small">
+            <li><a href="#" class="link-offset-2 link-underline link-underline-opacity-25 link-underline-opacity-75-hover">Documentation</a></li>
+            <li><a href="#" class="link-offset-2 link-underline link-underline-opacity-25 link-underline-opacity-75-hover">Use cases</a></li>
+            <li><a href="#" class="link-offset-2 link-underline link-underline-opacity-25 link-underline-opacity-75-hover">API status</a></li>
+            <li><a href="#" class="link-offset-2 link-underline link-underline-opacity-25 link-underline-opacity-75-hover">Partners</a></li>
+            <li><a href="#" class="link-offset-2 link-underline link-underline-opacity-25 link-underline-opacity-75-hover">Resources</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  
+    <section class="h-100 gradient-custom-2">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-lg-9 col-xl-7">
+            <div class="card">
+              <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+                <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                    alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                    style="width: 150px; z-index: 1">
+                  <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                    style="z-index: 1;">
+                    Edit profile
+                  </button>
+                </div>
+                <div class="ms-3" style="margin-top: 130px;">
+                  <h5>Andy Horwitz</h5>
+                  <p>New York</p>
+                </div>
+              </div>
+              <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                <div class="d-flex justify-content-end text-center py-1">
+                  <div>
+                    <p class="mb-1 h5">253</p>
+                    <p class="small text-muted mb-0">Photos</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="mb-1 h5">1026</p>
+                    <p class="small text-muted mb-0">Followers</p>
+                  </div>
+                  <div>
+                    <p class="mb-1 h5">478</p>
+                    <p class="small text-muted mb-0">Following</p>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-4 text-black">
+                <div class="mb-5">
+                  <p class="lead fw-normal mb-1">About</p>
+                  <div class="p-4" style="background-color: #f8f9fa;">
+                    <p class="font-italic mb-1">Web Developer</p>
+                    <p class="font-italic mb-1">Lives in New York</p>
+                    <p class="font-italic mb-0">Photographer</p>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <p class="lead fw-normal mb-0">Recent photos</p>
+                  <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                </div>
+                <div class="row g-2">
+                  <div class="col mb-2">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp"
+                      alt="image 1" class="w-100 rounded-3">
+                  </div>
+                  <div class="col mb-2">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp"
+                      alt="image 1" class="w-100 rounded-3">
+                  </div>
+                </div>
+                <div class="row g-2">
+                  <div class="col">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp"
+                      alt="image 1" class="w-100 rounded-3">
+                  </div>
+                  <div class="col">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp"
+                      alt="image 1" class="w-100 rounded-3">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+  <section class="vh-100" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-12 col-xl-10">
+  
+          <div class="card">
+            <div class="card-header p-3">
+              <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Task List</h5>
+            </div>
+            <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height: 200px">
+  
+              <table class="table mb-0">
+                <tbody>
+                  <tr class="fw-normal">
+                    <th>
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+                        class="shadow-1-strong rounded-circle" alt="avatar 1"
+                        style="width: 55px; height: auto;">
+                      <span class="ms-2">Alice Mayer</span>
+                    </th>
+                    <td class="align-middle">
+                      <span>Call Sam For payments</span>
+                    </td>
+                    <td class="align-middle">
+                      <h6 class="mb-0"><span class="badge bg-danger">High priority</span></h6>
+                    </td>
+                    <td class="align-middle">
+                      <a href="#!" data-mdb-toggle="tooltip" title="Done"><i
+                          class="fas fa-check text-success me-3"></i></a>
+                      <a href="#!" data-mdb-toggle="tooltip" title="Remove"><i
+                          class="fas fa-trash-alt text-danger"></i></a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% endblock %}

@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Car
+from .models import Car, SavedCar
 from django import forms
 
 
@@ -14,4 +14,8 @@ class CarsForm(forms.ModelForm):
             "description",
         ]      
 
+class SaveCarForm(forms.ModelForm):
+    class Meta:
+        model = SavedCar
+        fields = ['car', 'user']
 

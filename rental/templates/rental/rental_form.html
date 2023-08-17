@@ -1,31 +1,71 @@
-<h1>Rental form</h1>
 
 {% extends 'base.html' %}
-
+<link rel="stylesheet" href="/static/css/rental_form.css">
 {% block content %}
-<h1>Rent {{ car.make }} {{ car.model }}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<br><br>
+
+<div class="rental_form" style="display: flex; margin-left: 233px; @media (max-width: 600px){ margin-left: 23px;}">
+
+    <div class="px-3" style= "@media (max-width: 600px){ margin-left: 23px, display:None;}">
+        <h2 style="color: cornflowerblue; font-weight: bolder;"><p class="book" style="color: black;">Booking</p> {{ car.make }} {{ car.car_model }}</h2>
+        <hr>
+            <p class="small text-muted mb-1">Model Year</p>
+            <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">{{ car.model_year }}</p>
+
+            <p class="small text-muted mb-1">Daily Rental Price/Ecocash</p>
+            {% if car.ecocash_rate %}
+                <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">ZWL{{car.ecocash_rate}}</p>
+            {% else %}
+                <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">${{car.daily_rental_price}}</p>
+            {% endif %}
+
+            <p class="small text-muted mb-1">Car Owner</p>
+            <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">@{{car.owner.username}}</p>
+
+            <p class="small text-muted mb-1">Car Color</p>
+            <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">{{car.color}}</p>
+
+            <p class="small text-muted mb-1">Late Return Fee</p>
+            <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">${{car.late_return_fee_per_hr}}/hr</p>
+    </div>
 
 
-  <h1>Rental Reservation Form</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <h2>Chauffeur</h2>
-    <ul>
-      {% for chauffeur in car.chauffeur_set.all|order_by:'experience_years' %}
-        <li>
-          <input type="radio" name="with_chauffeur" value="{{ chauffeur.id }}">
-          <strong>{{ chauffeur.name }}</strong>
-          <p>Experience: {{ chauffeur.experience_years }} years</p>
-          <p>Hourly Rate: {{ chauffeur.hourly_rate }}</p>
-        </li>
-      {% endfor %}
-    </ul>
-    <button type="submit">Submit</button>
-  </form>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+      
+                <form method="post">
+                {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_start_date">Start Date</label>
+                        {{ form.start_date }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="id_end_date">End Date</label>
+                        {{ form.end_date }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="id_with_chauffeur">With Chauffeur</label>
+                        {{ form.with_chauffeur }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="id_customer_destination">Customer Destination</label>
+                        {{ form.customer_destination }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="id_payment_method">Payment Method</label>
+                        {{ form.payment_method }}
+                    </div><br>
+                    <a href="{% url 'rental_detail' pk=rental.id %}"><button type="submit" class="btn btn-primary">Proceed</button></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,129 @@
+form.form-inline.my-0.my-lg-0 {
+    display: flex;
+}
+
+    .navbar {
+      background: var(--dark-main-bg, #0D0D0D);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 0 20px;
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-size: 50px;
+      font-weight: bold;
+      font-family: 'Borel', cursive;
+      color: white;
+    }
+    
+    .navbar-brand img {
+      margin-left: 10px;
+    }
+    
+    .navbar-toggler {
+      border: none;
+    }
+    
+    .nav-link {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .nav-link:hover {
+      color: #007bff;
+    }
+
+    .active {
+      color: #007bff !important;
+    }
+
+    .active-link {
+      color: #007bff;
+      font-weight: bold;
+    }
+    
+    .form-inline {
+      margin-left: auto;
+    }
+    
+    .form-control {
+      border-color: #007bff;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background-color: #007bff;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .btn-primary:hover {
+      background-color: #0062cc;
+    }
+    
+    .material-icons {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+    
+    .nav-item {
+      margin-right: 20px;
+    }
+
+    .col-auto {
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      width: auto;
+      max-width: 100%;
+      margin-left: -17px;
+  }
+
+  .fa-solid, .fas {
+    color: cornflowerblue;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+  @media (max-width: 600px) {
+
+
+  section.text-center {
+    margin: 20px;
+    border-radius: 4em;
+
+  }
+
+  .main {
+    color: aliceblue;
+    min-height: 100vh;
+    background: black;
+    height: 100%;
+}
+
+.col-auto {
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  margin-left: -1px;
+}
+
+.card-title {
+  margin-bottom: .75rem;
+  color: antiquewhite;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}
+
+.pb-3, .py-3 {
+  padding-bottom: 1rem!important;
+  margin-left: -70px;
+}
+  }

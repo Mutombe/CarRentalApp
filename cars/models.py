@@ -56,6 +56,7 @@ class Car(models.Model):
     like = models.IntegerField(default=0)
     description = models.CharField(max_length=500,null=True, default=None)
     created_at = models.DateTimeField(default=timezone.now)
+    is_saved = models.BooleanField(default=False)
     
     def get_total_likes(self):
         return self.likes.users.count()
@@ -75,17 +76,20 @@ class Car(models.Model):
        # else:
         #    return None
         
-class SavedCars(models.Model):
+class SavedCar(models.Model):
     car = models.ForeignKey(
-        Car, related_name='saved_car', on_delete=models.CASCADE)
+        Car, related_name='cars', on_delete=models.CASCADE)
     user = models.ForeignKey(
         CustomUser, related_name='saved', on_delete=models.CASCADE)
-    date_posted = models.DateTimeField(default=timezone.now)
+    date_saved = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ('user', 'car')
+
 
     def __str__(self):
-        return self.job.title
+        return self.car.make
     
-
     
 class Like(models.Model):
     ''' like  car'''

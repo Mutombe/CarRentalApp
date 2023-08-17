@@ -1,0 +1,44 @@
+.container {
+    background-size: cover;
+    min-height: 100vh;
+    padding-top: 96px;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+  }
+  
+  button[type="reset"],
+  button[type="submit"] {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  button[type="reset"] {
+    background-color: #6c757d;
+    border: none;
+    color: #fff;
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+  }
+  
+  button[type="reset"]:hover,
+  button[type="submit"]:hover {
+    opacity: 0.8;
+  }

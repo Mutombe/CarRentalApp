@@ -1,24 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-
-    .fit-image {
-        object-fit: cover;
-        height: 200px; /* Set the height to the desired value */
-        }
-
-    #second{
-        padding-left:10px;
-    }
-
-    #third{
-        padding-left:10px;
-    }
-
-    button.save-button {
-        border: none;
-    }
-</style>
+<link rel="stylesheet" href="/static/css/cars.css">
 </br>
 <body class="m-5">
     <div class="container">
@@ -32,7 +14,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">All Car</li>
                             <li class="list-group-item">Latest Cars</li>
-                            <li class="list-group-item">Promotion</li>
+                            <a href="{% url 'saved-cars' %}"><li class="list-group-item">Saved Cars</li></a>
                             <li class="list-group-item">Review</li>
                             <a href="{% url 'car_add' %}" class="btn btn-dark btn-block btn-sm m-1">Add Car</a>
                         </ul>
@@ -50,17 +32,16 @@
                             <div class="card-body">
                                 <p class="card-text">
                                     <a href="{% url 'car_detail' pk=car.pk %}"><small>{{ car.make }}</small></a>
-                                     {% if request.user.is_authenticated %}
-                                        <span id="second"><button class="save-button" onclick="saveCar({{ car.id }})"><small>Save</small></button></span>
-                                    {% endif %}
-                                     
+                   
+                                    <a href="{% url 'rental_form' car.pk %}"><span id="book" class="ml-3 pointer"><small>Book</small></span></a>
+
                                     <span class="pointer">
                                         {% if request.user in car.likes.users.all%}
                                         <!-- already liked-->
                                         <a href={% url 'car_review' car_id=car.id review='like' %}> <i
                                            data-toggle="tooltip" data-placement="bottom" title="Unlike"
                                            class="like fas fa-thumbs-up pr-2">
-                                        <span>{{car.get_total_likes}}</span>
+                                        <span class="mx-2">{{car.get_total_likes}}</span>
                                         </i>
                                         </a>
                                         {% else %}
@@ -68,7 +49,7 @@
                                         <a href={% url 'car_review' car_id=car.id review='like' %}><i
                                            data-toggle="tooltip" data-placement="bottom" title="Like"
                                            class="default-icon fas fa-thumbs-up pr-2">
-                                        <span>{% if car.get_total_likes  %}{{car.get_total_likes}} {% else %} 0
+                                        <span class="mx-2">{% if car.get_total_likes  %}{{car.get_total_likes}} {% else %} 0
                                         {% endif %}</span></i>
                                         </a>
                                         {% endif %}
@@ -78,13 +59,13 @@
                                      <a href={% url 'car_review' car_id=car.id review='dis_like' %}><i
                                         data-toggle="tooltip" data-placement="bottom" title="i dislike this"
                                         class="dislike fas fa-thumbs-down pr-2">
-                                     <span>{{car.get_total_dis_likes}}</span></i>
+                                     <span class="mx-2">{{car.get_total_dis_likes}}</span></i>
                                      </a>
                                      {% else %}
                                      <a href={% url 'car_review' car_id=car.id review='dis_like' %}><i
                                         data-toggle="tooltip" data-placement="bottom" title="i dislike this "
                                         class="default-icon fas fa-thumbs-down pr-2">
-                                     <span>{% if  car.get_total_dis_likes %}{{car.get_total_dis_likes}}
+                                     <span class="mx-2">{% if  car.get_total_dis_likes %}{{car.get_total_dis_likes}}
                                      {% else %} 0 {% endif %}</span></i>
                                      </a>
                                      {% endif %}
@@ -94,7 +75,7 @@
                                 </p>
                             </div>
                             <a href="{% url 'car_detail' pk=car.pk %}" class="btn btn-outline-dark btn-sm m-1">View</a>
-                        </div>
+                        </div> 
                     </div>
                     {% endfor %}
 
@@ -106,41 +87,5 @@
     </div>
 </body>
 
-
-
-<script>
-function saveCar(carId) {
-fetch(`/save_car/${carId}/`)
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      // Update the page to reflect the saved car
-      const saveButton = document.querySelector('.save-button');
-      saveButton.textContent = 'Saved';
-      saveButton.disabled = true;
-    }
-  });
-}
-
-function likeCar(carId, isLike) {
-  const likeButton = document.querySelector(`.thumbs-${isLike ? 'up' : 'down'}`);
-  const dislikeButton = document.querySelector(`.thumbs-${isLike ? 'down' : 'up'}`);
-  fetch(`/like_car/${carId}/${isLike ? 'true' : 'false'}/`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Update the page to reflect the new like/dislike count
-        const likesCount = document.querySelector('.likes');
-        const dislikesCount = document.querySelector('.dislikes');
-        likesCount.textContent = data.likes;
-        dislikesCount.textContent = data.dislikes;
-        // Toggle the active class on the buttons
-        likeButton.classList.toggle('active');
-        dislikeButton.classList.remove('active');
-      }
-    });
-}
-
-</script>
 {% endblock %}
 

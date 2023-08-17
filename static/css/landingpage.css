@@ -1,0 +1,98 @@
+#intro {
+  height: 90vh;
+}
+
+/* Height for devices larger than 576px */
+@media (min-width: 992px) {
+  #intro {
+    margin-top: -58.59px;
+  }
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+}
+section.text-center {
+  margin: 7em;
+  border-radius: 4em;
+
+}
+
+img.d-block.w-100 {
+  border-radius: 0.5em;
+}
+
+img#cardimage {
+height: 9em;
+margin-top: 5px;
+object-fit: inherit;
+border-radius: 4px;
+}
+
+#icon{
+margin-left: -1em;
+}
+
+
+
+/* Styles for screens smaller than 600px */
+@media (max-width: 600px) {
+.container2 {
+display: none; /* Hide content2 on smaller screens */
+}
+
+section.text-center {
+margin: 20px;
+border-radius: 4em;
+
+}
+
+.main {
+color: aliceblue;
+min-height: 100vh;
+background: black;
+height: 100%;
+}
+
+.col-auto {
+-ms-flex: 0 0 auto;
+flex: 0 0 auto;
+width: auto;
+max-width: 100%;
+margin-left: -1px;
+}
+
+.card-title {
+margin-bottom: .75rem;
+color: antiquewhite;
+}
+
+.buttons {
+display: flex;
+justify-content: center;
+padding-bottom: 0.5em;
+}
+
+.pb-3, .py-3 {
+padding-bottom: 1rem!important;
+margin-left: -70px;
+}
+
+.form-outline .form-control~.form-label {
+position: absolute;
+top: 0;
+max-width: 90%;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+left: .75rem;
+padding-top: .37rem;
+pointer-events: none;
+transform-origin: 0 0;
+transition: all .2s ease-out;
+color: rgba(0,0,0,.6);
+margin-bottom: 0;
+color: cadetblue;
+}
+
+}

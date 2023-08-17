@@ -10,9 +10,8 @@ from django.contrib.auth.decorators import login_required
 def landingpage(request):
     cars = list(Car.objects.all())
     latest_car = Car.objects.latest('created_at')
-    random_cars = random.sample(cars, 3)
     context = {
-        'random_cars': random_cars,
+        'cars': cars,
         'latest_car': latest_car
     }
     return render(request, 'landingpage.html', context)

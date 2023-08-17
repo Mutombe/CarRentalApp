@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="/static/css/update_cars.css">
+  <center>
+    <br>
+    <h1>{{car.make}} Update</h1>
+    <form action=" " method="POST">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="form-group imagefield col-md-6">
+                <div class="current-image">
+                Current: <a href="{{car.image.url}}">Image</a>
+                <img class="img-thumbnail fit-image" src="{{ car.image.url }}" alt="Card image cap">
+                <br>
+            </div>
+                <input type="file" name="image" accept="image/*" id="id_image">
+                <img src="/media/static/media/cars/images/810fbaa1-4989-4173-9a50-de72c0035f68_83vYFzD.jpeg" alt="Car Photo Preview" value="car.image.url" class="car-preview img-thumbnail" id="car-photo-preview" style="display: none">
+                
+            </div>
+
+            <div id="make" class="form-group col-md-6">
+                <label class="label" for="make">Make</label>
+                {{form.make}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label  class="label" for="car_model">Model</label>
+                {{form.car_model}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="daily_rental_price">Daily rental price</label>
+                {{form.daily_rental_price}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label"  for="late_return_fee_per_hr">Late return fee per hour</label>
+                {{form.late_return_fee_per_hr}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label"  for="ecoacash_rate">Ecocash Rate(Optional)</label>
+                {{form.ecocash_rate}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="mileage">Mileage</label>
+                {{form.mileage}}
+            </div>
+            <div class="form-group col-md-6">
+                <label class="label" for="plate_number">Plate Number</label>
+                {{form.plate_number}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="model_year">Model Year</label>
+                {{form.model_year}}"
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="id_fuel_type">Fuel Type...</label>
+                {{form.fuel_type}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="color">Color</label>
+                {{form.color}}
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="label" for="num_seats">Number of Seats</label>
+                {{form.num_seats}}
+            </div>
+
+            <div id="disc" class="form-group col-md-6">
+                <label class="label" for="description">Description</label>
+                {{form.description}}
+            </div>
+            </div>
+            <br/>
+        <input type="submit" value="update" class="btn btn-secondary">
+        <a href="{% url 'dash' %}"><button type="button" style="padding-left: 1em;" class="btn btn-secondary">Cancel</button></a>
+        {% for message in messages %}
+            <p id="messages">{{message}}</p>
+        {% endfor %}
+    </form>
+    
+  </center>
+{% endblock %}

@@ -1,0 +1,17 @@
+form {
+    margin-left: 10em;
+}
+
+h1, h2 {
+    margin-left: 20em;
+}
+
+.rental_form {
+    display: flex;
+    margin-left: 233px;
+}
+
+@media (max-width: 600px) {
+
+
+}

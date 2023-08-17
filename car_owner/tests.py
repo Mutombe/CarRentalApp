@@ -1,6 +1,6 @@
 import pytest
 from django.core.exceptions import ValidationError
-from .forms import CarAddingForm
+from .forms import CarForm
 
 
 @pytest.fixture
@@ -17,12 +17,12 @@ def valid_form_data():
         "mileage": 50000,
         "fuel_type": "Gas",
         "like": False,
-        "description": "",
+        "description": "This car was imported from China",
     }
 
 
 def test_car_adding_form_valid(valid_form_data):
-    form = CarAddingForm(data=valid_form_data)
+    form = CarForm(data=valid_form_data)
     assert form.is_valid()
 
 
@@ -39,9 +39,9 @@ def test_car_adding_form_invalid_plate_number():
         "mileage": 50000,
         "fuel_type": "Gas",
         "like": False,
-        "description": "",
+        "description": "This car was imported from China",
     }
-    form = CarAddingForm(data=form_data)
+    form = CarForm(data=form_data)
     with pytest.raises(ValidationError) as e:
         form.is_valid(raise_exception=True)
     assert str(e.value) == "Invalid Zimbabwean number plate"

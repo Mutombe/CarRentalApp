@@ -14,100 +14,105 @@ from django.contrib import messages
 
 
 def car_add(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CarForm(request.POST, request.FILES)
         if form.is_valid():
             car = form.save(commit=False)
             car.owner = request.user
             car.save()
-            messages.success(request, 'Car added successfully')
-            return redirect('dash')
+            messages.success(request, "Car added successfully")
+            return redirect("dash")
     else:
         form = CarForm()
-    return render(request, 'car_owner/car_add.html', {'form': form})
+    return render(request, "car_owner/car_add.html", {"form": form})
+
 
 @login_required
 def delete_car(request, pk):
     car = Car.objects.get(pk=car.pk, owner=request.user)
-    if request.method == 'POST':
+    if request.method == "POST":
         car.delete()
-    return redirect('dash')
+    return redirect("dash")
+
 
 def dashboard(request):
     cars = Car.objects.filter(owner=request.user)
-    #rentals = Rental.objects.filter(car__in=cars).order_by('-id')
-    context = {
-        'cars':cars
-    }
-    return render(request, 'car_owner/dashboard.html', context)
+    # rentals = Rental.objects.filter(car__in=cars).order_by('-id')
+    context = {"cars": cars}
+    return render(request, "car_owner/dashboard.html", context)
+
 
 class CarUpdateView(LoginRequiredMixin, UpdateView):
     model = Car
     form_class = CarForm
-    template_name = 'car_owner/car_update.html'
-    success_url = reverse_lazy('dash')
+    template_name = "car_owner/car_update.html"
+    success_url = reverse_lazy("dash")
+
 
 def profile(request):
     chauffeur_details = Chauffeur.objects.filter(driver=request.user)
-    context = {'chauffeur_details': chauffeur_details}
-    return render(request, 'car_owner/profile.html', context)
+    context = {"chauffeur_details": chauffeur_details}
+    return render(request, "car_owner/profile.html", context)
+
 
 def add_profile(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ProfileForm(request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
-            return redirect('profile') 
+            return redirect("profile")
     else:
         form = ProfileForm()
     context = {
-        'form': form,
+        "form": form,
     }
-    return render(request, 'car_owner/add_profile.html', context)
+    return render(request, "car_owner/add_profile.html", context)
+
 
 def owner_edit_profile(request):
     if request.user.profile:
-        if request.method == 'POST':
+        if request.method == "POST":
             form = ProfileForm(request.POST, instance=request.user.profile)
             if form.is_valid():
                 form.save()
-                return redirect('profile')
+                return redirect("profile")
         else:
             form = ProfileForm(instance=request.user.profile)
-        return render(request, 'car_owner/edit_profile.html', {'form': form})
+        return render(request, "car_owner/edit_profile.html", {"form": form})
     else:
-        return redirect('add_profile')
-    
+        return redirect("add_profile")
+
+
 # Multi image approach
 
-#class UploadView(FormView):
- #   form_class = CarForm
-  #  template_name = 'car_owner/dashboard.html'
-   # success_url = reverse_lazy('dashboard')
-    
-   # def form_valid(self, form): 
-    #    car = form.save(commit=False)
-     #   car.owner = self.request.user
-      #  car.save()
-        
-       # image_files = self.request.FILES.getlist('image')
-        #if isinstance(image_files, list):
-         #   for image_file in image_files:
-          #      ext = os.path.splitext(image_files.name)[1]
-           #     allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif']
-            #    if ext.lower() not in allowed_extensions:
-             #       raise ValidationError("File type not supported.")
-              #  CarImage.objects.create(car=car, image=image_file)
-        #else:
-         #   image_file = image_files
-          #  ext = os.path.splitext(image_file)[1]
-           # allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif']
-            #if ext.lower() not in allowed_extensions:
-             #   raise ValidationError("File type not supported.")
-            #CarImage.objects.create(car=car, image=image_file)
-        #context = self.get_context_data()
-        #context['car'] = car
-            
-        #return super().form_valid(form)
+# class UploadView(FormView):
+#   form_class = CarForm
+#  template_name = 'car_owner/dashboard.html'
+# success_url = reverse_lazy('dashboard')
+
+# def form_valid(self, form):
+#    car = form.save(commit=False)
+#   car.owner = self.request.user
+#  car.save()
+
+# image_files = self.request.FILES.getlist('image')
+# if isinstance(image_files, list):
+#   for image_file in image_files:
+#      ext = os.path.splitext(image_files.name)[1]
+#     allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+#    if ext.lower() not in allowed_extensions:
+#       raise ValidationError("File type not supported.")
+#  CarImage.objects.create(car=car, image=image_file)
+# else:
+#   image_file = image_files
+#  ext = os.path.splitext(image_file)[1]
+# allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif']
+# if ext.lower() not in allowed_extensions:
+#   raise ValidationError("File type not supported.")
+# CarImage.objects.create(car=car, image=image_file)
+# context = self.get_context_data()
+# context['car'] = car
+
+# return super().form_valid(form)

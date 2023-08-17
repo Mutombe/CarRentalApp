@@ -12,10 +12,10 @@ class CarsForm(forms.ModelForm):
             "num_seats",
             "daily_rental_price",
             "description",
-        ]      
+        ]
+
 
 class SaveCarForm(forms.ModelForm):
     class Meta:
         model = SavedCar
-        fields = ['car', 'user']
-
+        fields = ["car", "user"]

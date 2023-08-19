@@ -1,0 +1,17 @@
+<!-- chauffeur_list.html -->
+<h2>Chauffeur Selection</h2>
+<h3>Car: {{ car.make }}</h3>
+
+<form method="POST" action="">
+  {% csrf_token %}
+
+  <!-- Display list of available chauffeurs -->
+  {% for chauffeur in chauffeurs %}
+    <label>
+      <input type="radio" name="chauffeur" value="{{ chauffeur.id }}">
+      {{ chauffeur.first_name }}
+    </label><br>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Continue</button>
+</form>

@@ -33,7 +33,7 @@
                                 <p class="card-text">
                                     <a href="{% url 'car_detail' pk=car.pk %}"><small>{{ car.make }}</small></a>
                    
-                                    <a href="{% url 'rental_form' car.pk %}"><span id="book" class="ml-3 pointer"><small>Book</small></span></a>
+                                    <a href="{% url 'booking_form' car.pk %}"><span id="book" class="ml-3 pointer"><small>Book</small></span></a>
 
                                     <span class="pointer">
                                         {% if request.user in car.likes.users.all%}

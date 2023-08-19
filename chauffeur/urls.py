@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path("add_chauffeur", views.chauffeur_add, name="add_chauffeur"),
-    path("chauffeur_dashboard", views.chauffeur_dashboard, name="chauffeur_dashboard"),
+    path("chauffeur_list", views.chauffeur_list, name="chauffeur_list"),
     path(
         "chauffeur_rental_history",
         views.chauffuer_rental_history,

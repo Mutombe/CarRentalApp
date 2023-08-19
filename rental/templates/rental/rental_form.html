@@ -27,6 +27,10 @@
 
             <p class="small text-muted mb-1">Late Return Fee</p>
             <p class="mb-0" style="color: cornflowerblue; font-weight: bolder;">${{car.late_return_fee_per_hr}}/hr</p>
+
+            {% for message in messages%}
+                <p style="color:red;">{{messages}}</p>
+            {% endfor %}
     </div>
 
 
@@ -62,7 +66,7 @@
                         <label for="id_payment_method">Payment Method</label>
                         {{ form.payment_method }}
                     </div><br>
-                    <a href="{% url 'rental_detail' pk=rental.id %}"><button type="submit" class="btn btn-primary">Proceed</button></a>
+                    <button type="submit" class="btn btn-primary">Proceed</button>
                 </form>
             </div>
         </div>

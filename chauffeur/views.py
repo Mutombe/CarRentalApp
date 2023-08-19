@@ -1,5 +1,6 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from cars.models import Car
 from rental.models import Rental
 from .models import Chauffeur
 from .forms import ChauffeurForm
@@ -30,7 +31,7 @@ class ChauffeurUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("profile")
 
 
-def chauffeur_dashboard(request):
+def chauffeur_list(request):
     chauffeurs = Chauffeur.objects.all()
     context = {"chauffeurs": chauffeurs}
     return render(request, "chauffeur/chauffeurs.html", context)

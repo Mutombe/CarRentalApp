@@ -16,14 +16,13 @@ class CustomUser(AbstractUser):
         verbose_name=_("user permissions"),
     )
 
-
 car_owner_group, created = Group.objects.get_or_create(name="Car_Owners")
 car_owner_group, created = Group.objects.get_or_create(name="Chauffeurs")
 customer_group, created = Group.objects.get_or_create(name="Customers")
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name="profile"
     )
     profile_pic = models.ImageField(upload_to="static/media/user_prof_pic/")

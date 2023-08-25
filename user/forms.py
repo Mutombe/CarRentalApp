@@ -20,8 +20,7 @@ class CreateUserForm(UserCreationForm):
             user.save()
         return user
 
-
-class CustomerProfileForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = ["user"]

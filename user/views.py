@@ -2,11 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
 from .models import UserProfile
-from .forms import CreateUserForm, CustomerProfileForm
+from .forms import CreateUserForm, ProfileForm
 
 
 def register_page(request):
@@ -43,28 +42,25 @@ def login_page(request):
         context = {}
         return render(request, "user_account_templates/logins.html", context)
 
-
 def logout_user(request):
     logout(request)
     return redirect("logins")
 
-
-def customer_profile(request):
-    profile = UserProfile.objects.get(user=request.user)
+def profile(request):
+    profile = UserProfile.objects.filter(user=request.user).first()
     context = {
         "profile": profile,
     }
-    return render(request, "user_account_templates/customer_profile.html", context)
-
+    return render(request, "user_account_templates/profile.html", context)
 
 @login_required
-def edit_profile(request, user):
+def edit_profile(request):
     profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
-        form = CustomerProfileForm(request.POST, request.FILES, instance=profile)
+        form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("profile")
     else:
-        form = CustomerProfileForm(instance=profile)
+        form = ProfileForm(instance=profile)
     return render(request, "user_account_templates/edit_profile.html", {"form": form})

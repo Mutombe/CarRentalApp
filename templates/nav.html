@@ -48,7 +48,7 @@
 
            <ul class="navbar-nav">
             {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{#% url 'profile' %#}"><i class="material-icons">account_circle</i> Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'profile' %}"><i class="material-icons">account_circle</i> Profile</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="material-icons">logout</i> Logout</a></li>
             {% else %}
               <li class="nav-item"><a class="nav-link" href="{% url 'logins' %}"><i class="material-icons">login</i> Login</a></li>

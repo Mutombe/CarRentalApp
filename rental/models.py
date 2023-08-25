@@ -34,29 +34,29 @@ class Rental(models.Model):
     status = models.CharField(max_length=100, choices=RENTAL_STATUS, default=None)
     is_returned = models.BooleanField(default=False)
     return_date = models.DateField(blank=True, null=True)
-    daily_rental_price = models.DecimalField(
+    rental_cost = models.DecimalField(
         max_digits=10, decimal_places=2, default=0.0
     )
     late_return_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
 
-    def calculate_rental_fee(self):
-        rental_days = (self.end_date - self.start_date).days + 1
-        if self.car.ecocash_rate and self.payment_method == "Ecocash":
-            rental_fee = (
-                self.car.daily_rental_price * rental_days * self.car.ecocash_rate
-            )
-        elif self.chauffeur.ecocash_rate and self.payment_method == "Ecocash":
-            if self.with_chauffeur:
-                rental_fee = self.car.daily_rental_price * self.car.ecocash_rate + (
-                    self.chauffeur.ecocash_rate * self.chauffeur.daily_fee
-                )
-        elif self.payment_method == "USD" and self.with_chauffeur:
-            rental_fee = rental_days * (
-                self.car.daily_rental_price + self.chauffeur.daily_fee
-            )
-        else:
-            rental_fee = self.car.daily_rental_price * rental_days
-        return rental_fee
+    #def calculate_rental_fee(self):
+     #   rental_days = (self.end_date - self.start_date).days + 1
+      #  if self.car.ecocash_rate and self.payment_method == "Ecocash":
+       #     rental_fee = (
+        #        self.car.daily_rental_price * rental_days * self.car.ecocash_rate
+         #   )
+        #elif self.chauffeur.ecocash_rate and self.payment_method == "Ecocash":
+         #   if self.with_chauffeur:
+          #      rental_fee = self.car.daily_rental_price * self.car.ecocash_rate + (
+           #         self.chauffeur.ecocash_rate * self.chauffeur.daily_fee
+            #    )
+        #elif self.payment_method == "USD" and self.with_chauffeur:
+         #   rental_fee = rental_days * (
+          #      self.car.daily_rental_price + self.chauffeur.daily_fee
+           # )
+        #else:
+         #   rental_fee = self.car.daily_rental_price * rental_days
+        #return rental_fee
 
     # def calculate_grand_total(self, payment_method):
     #    rental_fee = self.calculate_rental_fee()
@@ -82,6 +82,7 @@ class Rental(models.Model):
 
     # rental_hours = rental_duration.total_seconds() / 3600
 
+    
 
 class RentalHistory(models.Model):
     car_owner = models.CharField(max_length=100, default=None, blank=False)

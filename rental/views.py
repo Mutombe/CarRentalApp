@@ -25,16 +25,10 @@ def book_car(request, pk):
     if request.method == "POST":
         form = RentalForm(request.POST)
         if form.is_valid():
-            form_data = form.cleaned_data
+            booking_data = form.cleaned_data
             # store data in in a seesion
-            request.session["booking_data"] = {
-                "start_date": form_data["start_date"],
-                "end_date": form_data["end_date"],
-                "with_chauffeur": form_data["with_chauffeur"],
-                "customer_destination": form_data["customer_destination"],
-                "payment_method": form_data["payment_method"],
-            }
-            with_chauffeur = form_data.get('with_chauffeur')
+            request.session["booking_data"] = booking_data
+            with_chauffeur = booking_data.get('with_chauffeur')
             if with_chauffeur:
                 return redirect('choose_chauffeur_list')
             else:
@@ -46,27 +40,45 @@ def book_car(request, pk):
 
 def booking_confirmation(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    if request.method == "POST":
-        chauffeur_id = request.POST.get(Chauffeur.id)
-        chauffeur = get_object_or_404(Chauffeur, id=chauffeur_id)
+    rental = None
+    chauffeur_id = request.POST.get(Chauffeur.id)
         # Retrieve the stored booking data from the session
-        booking_data = request.session.get("booking_data")
-
-        if booking_data is not None:
-            # Update the booking data with chauffeur selection
-            booking_data["with_chauffeur"] = True
-            booking_data["chauffeur"] = chauffeur.id
+    booking_data = request.session.get("booking_data")
+    if booking_data:
+        chauffeur_present = booking_data.get("with_chauffeur")
+        chauffeur = None
+        if chauffeur_present:
+            chauffeur = get_object_or_404(Chauffeur, id=chauffeur_id)
+            booking_data["chauffeur"] = chauffeur
+            price = car.ecocash_rate * (car.daily_rental_price + chauffeur.daily_fee)
+        else:
+            price = car.ecocash_rate * car.daily_rental_price
 
             # Send an email to the chauffeur
             # send_email_to_chauffeur(booking_data, car, chauffeur)
+        
 
-            return render(
-                request,
-                "rental/booking_confirmation.html",
-                {"car": car, "booking_data": booking_data},
-            )
-    messages.success(request, "Couldn't render your rental details")
-    return redirect("booking_form", pk=car.pk)
+        rental = Rental(
+            car=car,
+            customer = request.user,
+            start_date=booking_data["start_date"],
+            end_date=booking_data["end_date"],
+            customer_destination=booking_data["customer_destination"],
+            payment_method=booking_data["payment_method"],
+            with_chauffeur=bool(chauffeur_id),
+            rental_cost=price,
+            chauffeur=chauffeur if chauffeur_present else None, 
+            status = "Completed"  
+        )
+        rental.save()
+        # Clear the booking data from the session
+        del request.session["booking_data"]
+        return redirect("rental_detail", pk=rental.pk)
+
+    else:
+        messages.success(request, "Just rendered your rental details")
+        return render(request, "rental/booking_confirmation.html", {"car": car, "rental": rental})
+   
 
 def chauffeur_list(request):
     chauffeurs = Chauffeur.objects.all()
@@ -74,8 +86,8 @@ def chauffeur_list(request):
     return render(request, "rental/chauffeurs.html", context)
 
 def rental_details(request, pk):
-    rental = get_object_or_404(Rental, pk=rental.id)
-    return render(request, "rental_details.html", {"rental": rental})
+    rental = get_object_or_404(Rental, pk=pk)
+    return render(request, "rental/rental_details.html", {"rental": rental})
 
 
 def generate_reciept(request):

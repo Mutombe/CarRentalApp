@@ -1,14 +1,14 @@
 <!-- booking_confirmation.html -->
 <h2>Booking Confirmation</h2>
-<h3>Car: {{ car.make }}</h3>
-<p>Start Date: {{ booking_data.start_date }}</p>
-<p>End Date: {{ booking_data.end_date }}</p>
+<h3>Car: {{ rental.car.make }}</h3>
+<p>Start Date: {{ rental.start_date }}</p>
+<p>End Date: {{ rental.end_date }}</p>
 
 {% if booking_data.chauffeur %}
   <p>Chauffeur: {{ booking_data.chauffeur.first_name }}</p>
 {% endif %}
 
-<p>Price: {{ car.daily_rental_price }}</p>
+<p>Price: {{ rental.rental_cost }}</p>
 
 <!-- Proceed to payment button -->
-<a href="{% url 'payment' car.id %}" class="btn btn-primary">Proceed to Payment</a>
+<a href="{#% url 'payment' car.id %#}" class="btn btn-primary">Proceed to Payment</a> 

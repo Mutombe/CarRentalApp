@@ -1,143 +1,81 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Rental Details</h1>
-<p>Car: {{ rental.car.make }} {{ rental.car.model }}</p>
-<p>Start Date: {{ rental.start_date }}</p>
-<p>End Date: {{ rental.end_date }}</p>
-{% if rental.chauffeur %}
-  <p>Chauffeur: {{ rental.chauffeur.name }}</p>
-{% endif %}
-<p>Total Cost: ${{ rental.total_cost }}</p>
+<section class="vh-100" style="background-color: #35558a;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100 text-center">
+      <div class="col">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-light btn-lg" data-mdb-toggle="modal"
+          data-mdb-target="#exampleModal">
+          <i class="fas fa-info me-2"></i> Get rental detail information
+        </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-bottom-0">
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-start text-black p-4">
+                <h5 class="modal-title text-uppercase mb-5" id="exampleModalLabel">{{ rental.car.make }} <strong>{{ rental.car.car_model }}</strong></h5>
+                <h4 class="mb-5" style="color: #35558a;">Thanks for your booking</h4>
+                <p class="mb-0" style="color: #35558a;">Rental summary</p>
+                <hr class="mt-2 mb-4"
+                  style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
 
-<h1>Rental Recipts</h1>
-<section class="h-100 gradient-custom">
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-10 col-xl-8">
-          <div class="card" style="border-radius: 10px;">
-            <div class="card-header px-4 py-5">
-              <h5 class="text-muted mb-0">Thanks for your Order, <span style="color: #a8729a;">Anna</span>!</h5>
-            </div>
-            <div class="card-body p-4">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <p class="lead fw-normal mb-0" style="color: #a8729a;">Receipt</p>
-                <p class="small text-muted mb-0">Receipt Voucher : 1KAU9-84UIL</p>
-              </div>
-              <div class="card shadow-0 border mb-4">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-2">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                        class="img-fluid" alt="Phone">
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0">Samsung Galaxy</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">White</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">Capacity: 64GB</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">Qty: 1</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">$499</p>
-                    </div>
-                  </div>
-                  <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                  <div class="row d-flex align-items-center">
-                    <div class="col-md-2">
-                      <p class="text-muted mb-0 small">Track Order</p>
-                    </div>
-                    <div class="col-md-10">
-                      <div class="progress" style="height: 6px; border-radius: 16px;">
-                        <div class="progress-bar" role="progressbar"
-                          style="width: 65%; border-radius: 16px; background-color: #a8729a;" aria-valuenow="65"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <div class="d-flex justify-content-around mb-1">
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                      </div>
-                    </div>
-                  </div>
+                <div class="d-flex justify-content-between">
+                  <p class="fw-bold mb-0">Customer</p>
+                  <p class="text-muted mb-0">{{rental.customer}}</p>
                 </div>
-              </div>
-              <div class="card shadow-0 border mb-4">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-2">
-                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/1.webp"
-                        class="img-fluid" alt="Phone">
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0">iPad</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">Pink rose</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">Capacity: 32GB</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">Qty: 1</p>
-                    </div>
-                    <div class="col-md-2 text-center d-flex justify-content-center align-items-center">
-                      <p class="text-muted mb-0 small">$399</p>
-                    </div>
-                  </div>
-                  <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
-                  <div class="row d-flex align-items-center">
-                    <div class="col-md-2">
-                      <p class="text-muted mb-0 small">Track Order</p>
-                    </div>
-                    <div class="col-md-10">
-                      <div class="progress" style="height: 6px; border-radius: 16px;">
-                        <div class="progress-bar" role="progressbar"
-                          style="width: 20%; border-radius: 16px; background-color: #a8729a;" aria-valuenow="20"
-                          aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <div class="d-flex justify-content-around mb-1">
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Out for delivary</p>
-                        <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                      </div>
-                    </div>
-                  </div>
+
+                <div class="d-flex justify-content-between">
+                  <p class="fw-bold mb-0">Car Owner</p>
+                  <p class="text-muted mb-0">{{rental.car.owner}}</p>
                 </div>
+
+                <div class="d-flex justify-content-between">
+                  <p class="small mb-0">Start-date</p>
+                  <p class="small mb-0">{{rental.start_date}}</p>
+                </div>
+
+                <div class="d-flex justify-content-between pb-1">
+                  <p class="small">End-date</p>
+                  <p class="small">{{rental.end_date}}</p>
+                </div>
+
+                {% if rental.chauffeur %}
+                <div class="d-flex justify-content-between pb-1">
+                  <p class="small">Driver</p>
+                  <p class="small">{{rental.chauffeur.name}}</p>
+                </div>
+                {% else %}
+                <div class="d-flex justify-content-between pb-1">
+                  <p class="small">Driver Situation</p>
+                  <p class="small">You did'nt select a chauffeur</p>
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between">
+                  <p class="fw-bold">Rental Cost</p>
+                  <p class="fw-bold" style="color: #35558a;">ZWL {{rental.rental_cost}}</p>
+                </div>
+
               </div>
-  
-              <div class="d-flex justify-content-between pt-2">
-                <p class="fw-bold mb-0">Order Details</p>
-                <p class="text-muted mb-0"><span class="fw-bold me-4">Total</span> $898.00</p>
+              <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
+                <button type="button" class="btn btn-primary btn-lg mb-1" style="background-color: #35558a;">
+                  Proceed to payment
+                </button>
               </div>
-  
-              <div class="d-flex justify-content-between pt-2">
-                <p class="text-muted mb-0">Invoice Number : 788152</p>
-                <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> $19.00</p>
-              </div>
-  
-              <div class="d-flex justify-content-between">
-                <p class="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
-                <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> 123</p>
-              </div>
-  
-              <div class="d-flex justify-content-between mb-5">
-                <p class="text-muted mb-0">Recepits Voucher : 18KU-62IIK</p>
-                <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> Free</p>
-              </div>
-            </div>
-            <div class="card-footer border-0 px-4 py-5"
-              style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
-              <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
-                paid: <span class="h2 mb-0 ms-2">$1040</span></h5>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-  </section>
+  </div>
+</section>
 {% endblock %}
+

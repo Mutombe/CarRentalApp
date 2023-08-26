@@ -2,11 +2,59 @@
 
 {% block content %}
 <link rel="stylesheet" href="/static/css/car_profile.css">
-<div class="container">
+<style>
+
+  .ssection{
+    display:none;
+  }
+
+  .fsection{
+    display:block;
+  }
+
+  @media (max-width: 600px) {
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: inherit;
+      width: inherit;
+  }
+
+
+    .fsection{
+      display: none;
+    }
+
+    .ssection{
+      display:block;
+    }
+
+    .justify-content-start.rounded-3.p-1.mb- {
+    width: fit-content;
+    }  
+
+    .justify-content-start.rounded-3.p-2.mb-2 {
+      width: fit-content;
+  }
+
+  .justify-content-center.rounded-3.p-2.mb-2.ddd {
+    margin-left: 50px;
+  }
+
+  .card {
+    width: 280px;
+}
+  }
+
+
+</style>
+<div class="container ">
     <div class="options">
       <button class="option active" data-target="button1"><span>Car</span></button>
       <button class="option" data-target="button3"><span>Book</span></button>
-      <a href="{% url 'car_list' %}"><button class="option">Go Back</button></a>
+      <a href="{% url 'landingpage' %}"><button class="option">Go Back</button></a>
       {% if not save_button %}
       <a
         class="btn btn-primary btn-lg ml-2"
@@ -26,7 +74,7 @@
         <h2>{{ car.make }}</h2>
 
 
-            <section class="vh-100" style="background-color: f2f2f2;">
+            <section class="vh-100 fsection" style="background-color: f2f2f2;">
               <div class="container py-5 h-10">
                 <div class="row d-flex justify-content-center align-items-center h-100" style="width: 62px">
                   <div class="col col-md-9 col-lg-7 col-xl-5">
@@ -78,11 +126,11 @@
                                 <p class="mb-0">Available</p>
                                 {% endif %}
                               </div>
-
                             </div>
+                            
                             <div class="d-flex pt-1">
                               <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Chat</button>
-                              <button type="button" class="btn btn-primary flex-grow-1"><a href="{% url 'booking_form' car.pk %}">Book</a></button>
+                              <button type="button" style="color:white;" class="btn btn-primary flex-grow-1" ><a href="{% url 'booking_form' car.pk %}">Book</a></button>
                             </div>
                           </div>
                         </div>
@@ -92,182 +140,137 @@
                 </div>
               </div>
 
-              <div class="d-flex justify-content-center rounded-3 p-2 mb-2 ddd">
-                      
+              <div class="d-flex justify-content-center rounded-3 p-2 mb-2 ddd">    
+                  <div>
+                      <p class="small text-muted mb-1">Car Owner</p>
+                      <p class="mb-0">@{{car.owner.username}}</p>
+                    </div>
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Car Color</p>
+                      <p class="mb-0">{{car.color}}</p>
+                    </div>
+                    <div>
+                      <p class="small text-muted mb-1">Car Tracker</p>
+                      {% if car.has_tracker %}
+                      <p class="mb-0">Installed</p>
+                      {% else %}
+                      <p class="mb-0">Not Installed</p>
+                      {% endif %}
+                    </div>
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Plate Number</p>
+                      <p class="mb-0">{{car.plate_number}}</p>
+                    </div>
+
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Fuel Type</p>
+                      <p class="mb-0">{{car.fuel_type}}</p>
+
+                    </div>
+            </section>
+
+            <section class="vh-100 ssection" style="background-color: f2f2f2;">
+              <div class="container py-5 h-10">
+                <div class="row d-flex justify-content-center align-items-center h-100" style="">
+                  <div class="col col-md-9 col-lg-7 col-xl-5">
+                    <div class="card" style="border-radius: 15px;">
+                      <div class="card-body p-4">
+                        <div class="text-black">
+                          <div class="flex-shrink-0">
+                            <a href="{% url 'photo' pk=car.pk %}">
+                            <img src="{{ car.image.url }}"
+                            alt="Generic placeholder image" class="img-fluid"
+                              style="width: 180px; border-radius: 10px;"> 
+                            </a>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-1">Details</strong></h5>
+                            <p class="mb-2 pb-1" style="color: #2b2a2a;">{{ car.description }}</p>
+                            <div class="justify-content-start rounded-3 p-2 mb-2"
+                              style="background-color: #efefef;">
                               <div>
-                                <p class="small text-muted mb-1">Car Owner</p>
-                                <p class="mb-0">@{{car.owner.username}}</p>
-                              </div>
-                              <div class="px-3">
-                                <p class="small text-muted mb-1">Car Color</p>
-                                <p class="mb-0">{{car.color}}</p>
-                              </div>
-                              <div>
-                                <p class="small text-muted mb-1">Car Tracker</p>
-                                {% if car.has_tracker %}
-                                <p class="mb-0">Installed</p>
+                                <p class="small text-muted mb-1">Daily-Rental-Price/Ecocash</p>
+                                {% if car.ecocash_rate %}
+                                <p class="mb-0">ZWL{{car.ecocash_rate}}</p>
                                 {% else %}
-                                <p class="mb-0">Not Installed</p>
+                                <p class="mb-0">${{car.daily_rental_price}}</p>
                                 {% endif %}
                               </div>
                               <div class="px-3">
-                                <p class="small text-muted mb-1">Plate Number</p>
-                                <p class="mb-0">{{car.plate_number}}</p>
+                                <p class="small text-muted mb-1">Late Return Fee</p>
+                                <p class="mb-0">${{car.late_return_fee_per_hr}}/hr</p>
+                              </div>
+                              <div>
+                                <p class="small text-muted mb-1">Location</p>
+                                {% if car.city %}
+                                <p class="mb-0">{{ car.city }}</p><p class="mb-0">{{ car.residence }}</p>
+                                {% else %}
+                                <p class="mb-0">Not uploaded</p>
+                                {% endif %}
+                              </div>
+                              <div class="px-3">
+                                <p class="small text-muted mb-1">Model Year</p>
+                                <p class="mb-0">{{ car.model_year }}</p>
                               </div>
 
                               <div class="px-3">
-                                <p class="small text-muted mb-1">Fuel Type</p>
-                                <p class="mb-0">{{car.fuel_type}}</p>
-
+                                <p class="small text-muted mb-1">Status</p>
+                                {% if car.is_booked %}
+                                <p class="mb-0">Booked</p>
+                                {% else %}
+                                <p class="mb-0">Available</p>
+                                {% endif %}
                               </div>
+                            </div>
+                            
+                            <div class="pt-1">
+                              <button type="button" class="btn btn-outline-primary me-1 flex-grow-1">Chat</button>
+                              <button type="button" style="color:white;" class="btn btn-primary flex-grow-1" ><a href="{% url 'booking_form' car.pk %}">Book</a></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="justify-content-center rounded-3 p-2 mb-2 ddd">    
+                  <div>
+                      <p class="small text-muted mb-1">Car Owner</p>
+                      <p class="mb-0">@{{car.owner.username}}</p>
+                    </div>
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Car Color</p>
+                      <p class="mb-0">{{car.color}}</p>
+                    </div>
+                    <div>
+                      <p class="small text-muted mb-1">Car Tracker</p>
+                      {% if car.has_tracker %}
+                      <p class="mb-0">Installed</p>
+                      {% else %}
+                      <p class="mb-0">Not Installed</p>
+                      {% endif %}
+                    </div>
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Plate Number</p>
+                      <p class="mb-0">{{car.plate_number}}</p>
+                    </div>
+
+                    <div class="px-3">
+                      <p class="small text-muted mb-1">Fuel Type</p>
+                      <p class="mb-0">{{car.fuel_type}}</p>
+
+                    </div>
             </section>
 
+
       </div>
-
-      <div class="button3" id="button3">
-        <h2>Booking</h2>
-      
-        <section class="h-100 h-custom" style="background-color: #eee;">
-          <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-              <div class="col-lg-8 col-xl-6">
-                <div class="card border-top border-bottom border-3" style="border-color: #f37a27 !important;">
-                  <div class="card-body p-5">
-        
-                    <p class="lead fw-bold mb-5" style="color: #f37a27;">Purchase Reciept</p>
-        
-                    <div class="row">
-                      <div class="col mb-3">
-                        <p class="small text-muted mb-1">Date</p>
-                        <p>10 April 2021</p>
-                      </div>
-                      <div class="col mb-3">
-                        <p class="small text-muted mb-1">Order No.</p>
-                        <p>012j1gvs356c</p>
-                      </div>
-                    </div>
-        
-                    <div class="mx-n5 px-5 py-4" style="background-color: #f2f2f2;">
-                      <div class="row">
-                        <div class="col-md-8 col-lg-9">
-                          <p>BEATS Solo 3 Wireless Headphones</p>
-                        </div>
-                        <div class="col-md-4 col-lg-3">
-                          <p>£299.99</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-8 col-lg-9">
-                          <p class="mb-0">Shipping</p>
-                        </div>
-                        <div class="col-md-4 col-lg-3">
-                          <p class="mb-0">£33.00</p>
-                        </div>
-                      </div>
-                    </div>
-        
-                    <div class="row my-4">
-                      <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
-                        <p class="lead fw-bold mb-0" style="color: #f37a27;">£262.99</p>
-                      </div>
-                    </div>
-        
-                    <p class="lead fw-bold mb-4 pb-2" style="color: #f37a27;">Tracking Order</p>
-        
-                    <div class="row">
-                      <div class="col-lg-12">
-        
-                        <div class="horizontal-timeline">
-        
-                          <ul class="list-inline items d-flex justify-content-between">
-                            <li class="list-inline-item items-list">
-                              <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Ordered</p
-                                class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
-                            </li>
-                            <li class="list-inline-item items-list">
-                              <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">Shipped</p
-                                class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">
-                            </li>
-                            <li class="list-inline-item items-list">
-                              <p class="py-1 px-2 rounded text-white" style="background-color: #f37a27;">On the way
-                              </p>
-                            </li>
-                            <li class="list-inline-item items-list text-end" style="margin-right: 8px;">
-                              <p style="margin-right: -8px;">Delivered</p>
-                            </li>
-                          </ul>
-        
-                        </div>
-        
-                      </div>
-                    </div>
-        
-                    <p class="mt-4 pt-2 mb-0">Want any help? <a href="#!" style="color: #f37a27;">Please contact
-                        us</a></p>
-        
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-        <section class="vh-100 gradient-custom-2">
-          <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-              <div class="col-md-10 col-lg-8 col-xl-6">
-                <div class="card card-stepper" style="border-radius: 16px;">
-                  <div class="card-header p-4">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <p class="text-muted mb-2"> Order ID <span class="fw-bold text-body">1222528743</span></p>
-                        <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">12,March 2019</span> </p>
-                      </div>
-                      <div>
-                        <h6 class="mb-0"> <a href="#">View Details</a> </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-body p-4">
-                    <div class="d-flex flex-row mb-4 pb-2">
-                      <div class="flex-fill">
-                        <h5 class="bold">Headphones Bose 35 II</h5>
-                        <p class="text-muted"> Qt: 1 item</p>
-                        <h4 class="mb-3"> $ 299 <span class="small text-muted"> via (COD) </span></h4>
-                        <p class="text-muted">Tracking Status on: <span class="text-body">11:30pm, Today</span></p>
-                      </div>
-                      <div>
-                        <img class="align-self-center img-fluid"
-                          src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/6.webp" width="250">
-                      </div>
-                    </div>
-                    <ul id="progressbar-1" class="mx-0 mt-0 mb-5 px-0 pt-0 pb-4">
-                      <li class="step0 active" id="step1"><span
-                          style="margin-left: 22px; margin-top: 12px;">PLACED</span></li>
-                      <li class="step0 active text-center" id="step2"><span>SHIPPED</span></li>
-                      <li class="step0 text-muted text-end" id="step3"><span
-                          style="margin-right: 22px;">DELIVERED</span></li>
-                    </ul>
-                  </div>
-                  <div class="card-footer p-4">
-                    <div class="d-flex justify-content-between">
-                      <h5 class="fw-normal mb-0"><a href="#!">Track</a></h5>
-                      <div class="border-start h-100"></div>
-                      <h5 class="fw-normal mb-0"><a href="#!">Cancel</a></h5>
-                      <div class="border-start h-100"></div>
-                      <h5 class="fw-normal mb-0"><a href="#!">Pre-pay</a></h5>
-                      <div class="border-start h-100"></div>
-                      <h5 class="fw-normal mb-0"><a href="#!" class="text-muted"><i class="fas fa-ellipsis-v"></i></a>
-                      </h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      
+      <br>
+    <br>
+  <br>
+<br>
+      <p class="mt-4 pt-2 mb-0">Want any help? <a href="{% url 'booking_form' car.pk %}" style="color: #f37a27; text-decoration: underline;">Please go to the booking page</a></p> 
     </div>
   </div>
   <script src="/static/js/car_profile.js"></script>

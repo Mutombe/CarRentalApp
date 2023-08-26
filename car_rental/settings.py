@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-q^3*pv*8gld6dg8^r_(bc@u2t^@1h*s+-s)-my+x9gj=v+4-gx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 
 # Application definition
@@ -76,7 +76,6 @@ WSGI_APPLICATION = 'car_rental.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     'default': {

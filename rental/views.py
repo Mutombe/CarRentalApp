@@ -55,7 +55,7 @@ def booking_confirmation(request, pk):
             price = car.ecocash_rate * car.daily_rental_price
 
             # Send an email to the chauffeur
-            # send_email_to_chauffeur(booking_data, car, chauffeur)
+            # send_email_to_chauffeur(booking_data, car, chauffeur) 
         
 
         rental = Rental(

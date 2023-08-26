@@ -1,58 +1,186 @@
 {% extends 'base.html' %}
 {% block content %}
-<link rel="stylesheet" href="/static/css/chauffeurs.css">
-{% for chauffeur in chauffeurs %}
-<section class="vh-10" style="background-color: #5f59f7;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col col-xl-10">
-        <div class="card mb-5" style="border-radius: 15px;">
-          <div class="card-body p-4">
-            <h3 class="mb-3">{{chauffeur.first_name}} {{chauffeur.last_name}}</h3>
-            <p class="small mb-0">Save <span class="mx-2">|</span> Created by @{{chauffeur.first_name}}
-              <span class="mx-2">|</span>  <strong>Joined</strong> on {{chauffeur.date_joined}}</p>
-            <hr class="my-4">
-            <div class="d-flex justify-content-start align-items-center">
-              <p class="mb-0"><i class="fas fa-link ms-4 me-2"></i> <span
-                  class="text-muted small">{{chauffeur.email}}</span></p>
-              <p class="mb-0 text-uppercase"><i class="fas fa-link ms-4 me-2"></i> <span
-                  class="text-muted small">+263{{chauffeur.phone_number}}</span></p>
-              <p class="mb-0 text-uppercase"><i class="fas fa-ellipsis-h ms-4 me-2"></i> 
-                {% if chauffeur.is_booked %}
-                  <spanclass="text-muted small">Booked</span>
-                {% else %}
-                <span class="text-muted small">Available</span>
-                {% endif %}
-                <span class="ms-3 me-4">|</span></p>
-
-                <p class="mb-0 ">Daily Fee:
-                  <span class="text-muted small">{{chauffeur.daily_fee}}</span>
-                </p>
-                <span class="mx-2">|</span>
-                <p class="mb-0 ">Experience:
-                  <span class="text-muted small">{{chauffeur.driver_experience}}</span>
-                </p>
-                <span class="mx-2">|</span>
-              <a href="#!">
-                <img src="{{chauffeur.profile_photo.url}}" alt="avatar"
-                  class="img-fluid rounded-circle me-3" width="35">
-              </a>
-              <button type="button" class="btn btn-outline-dark btn-sm btn-floating">
-                <i class="fas fa-plus"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-{% empty %}
-<br><br>
-<h3>No chauffeurs yet<h3>
-{% endfor %}
 
 
+<style>    
+  body{
+    padding-top: 23px;
+    background-color: #5f59f;
+  }
+  .card{
+    background-color: #fff;
+    width: 300px;
+    border-radius: 33px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 2rem !important;
+  }
+  .top-container{
+    display: flex;
+    align-items: center;
+  }
+  .profile-image{
+    margin-right:4px;
+    border-radius: 10px;
+    border: 2px solid #5957f9;
+  }
+  .name{
+    font-size: 15px;
+    font-weight: bold;
+    color: #272727;
+    position: relative;
+    top: 8px;
+  }
+  .mail{
+    font-size: 14px;
+    color: grey;
+    position: relative;
+    top: 2px;
+  }
+  .middle-container{
+    background-color: #eee;
+    border-radius: 12px;
+  
+  }
+  .middle-container:hover {
+    border: 1px solid #5957f9;
+  }
+  .dollar-div{
+    background-color: #5957f9;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  .round-div{
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .dollar{
+    font-size: 16px !important;
+    color: #5957f9 !important;
+    font-weight: bold !important;
+  }
+  
+  
+  .current-balance{
+    font-size: 15px;
+    color: #272727;
+    font-weight: bold;
+  }
+  .amount{
+    color: #5957f9;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .dollar-sign{
+    font-size: 16px;
+    color: #272727;
+    font-weight: bold;
+  }
+  
+  .recent-border{
+    border-left: 2px solid #5957f9;
+    display: flex;
+    align-items: center;
+  
+  }
+  .recent-border:hover {
+    border-bottom: 1px solid #dee2e6!important;
+  }
+  
+  .recent-orders{
+    font-size: 16px;
+    font-weight: 700;
+    color: #5957f9;
+    margin-left: 2px;
+  }
+  
+  .wishlist{
+    font-size: 16px;
+    font-weight: 700;
+    color: #272727;
+  
+  }
+  .wishlist-border:hover{
+    border-bottom: 1px solid #dee2e6!important;
+  }
+  .fashion-studio{
+    font-size: 16px;
+    font-weight: 700;
+    color: #272727;
+  }
+  .fashion-studio-border:hover {
+    border-bottom: 1px solid #dee2e6!important;
+  }
 
+  @media (max-width: 600px){
+
+    body{
+
+      background-color: #eee;
+    }
+
+    .card{
+      padding-top: 30px;
+    }
+
+}
+</style>
+        {% for chauffeur in chauffeurs %}
+        <br>
+        <br>
+        <div class="container d-flex justify-content-center mt-10">
+	          <div class="card">
+		          <div class="top-container">
+			          <img src="{{ chauffeur.profile_photo.url }}" class="img-fluid profile-image" width="70">
+			            <div class="ml-3">
+				            <h5 class="name">{{ chauffeur.first_name }} {{ chauffeur.last_name }}</h5>
+				            <p class="mail"><small>{{ chauffeur.email }}</small></p>
+			            </div>
+		            </div>
+
+
+		            <div class="middle-container d-flex justify-content-between align-items-center mt-3 p-2">
+
+                  
+				              <div class="d-flex flex-column text-right mr-2">
+					              <span class="current-balance">Current Daily Fee</span>
+					              <span class="amount"><span class="dollar-sign">$</span>{{ chauffeur.daily_fee }}</span>
+				              </div>
+		                </div>
+
+		                <div class="recent-border mt-4">
+			                <span class="recent-orders"><strong>Joined</strong> on {{ chauffeur.date_joined }}</span>
+		                </div>
+		                <div class="wishlist-border pt-2">
+			                <span class="wishlist">Experience: <strong>{{ chauffeur.driver_experience }} years</strong></span>
+		                </div>
+		                <div class="fashion-studio-border pt-2">
+			                <span class="fashion-studio"></span>
+		                </div>
+
+                    <div class="fashion-studio-border pt-2">
+			                <span class="fashion-studio"><i class="bi bi-telephone"></i>+263{{ chauffeur.phone_number }}</span>
+		                </div>
+
+                    {% if chauffeur.is_booked %}
+                    <div class="fashion-studio-border pt-2">
+			                <span class="fashion-studio"> Booked</span>
+		                </div>
+                    {% else %}
+                    <div class="fashion-studio-border pt-2">
+			                <span class="fashion-studio"> <i class="bi bi-person-add"></i> Available</span>
+                    {% endif %}
+		              </div>
+	              </div>
+              </div>
+    {% empty %}
+    <br><br>
+    <h3>No chauffeurs yet</h3>
+  {% endfor %}
 {% endblock %}
 

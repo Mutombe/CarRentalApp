@@ -13,7 +13,7 @@ class Rental(models.Model):
     ]
 
     PAYMENT_METHOD_CHOICES = [("Ecocash", "Ecocash"), ("USD", "USD")]
-
+   
     id = models.AutoField(null=False, primary_key=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE, default=None)
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=None)

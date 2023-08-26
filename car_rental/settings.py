@@ -29,7 +29,6 @@ INSTALLED_APPS = [
 
     #Local 
     'user',
-    'contact',
     'car_owner',
     'chauffeur',
     'rental',

@@ -12,10 +12,8 @@ from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import DeleteView, ListView
 from django.views.generic.edit import UpdateView, DeleteView
-
-# from .filters import CarFilter
 from .models import Like, DisLike
-from .forms import CarsForm, SaveCarForm
+from .forms import SaveCarForm
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
@@ -112,50 +110,6 @@ class CarDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("dashboard")
 
 
-class CarDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Car
-    success_url = reverse_lazy("car_list")
-
-    def test_func(self):
-        car = self.get_object()
-        return self.request.user == car.owner
-
-
-def car_filter(request):
-    car_list = Car.objects.all()
-    car_filter = CarFilter(request.GET, queryset=car_list)
-    car_list = car_filter.qs
-    return render(request, "cars/car_filter.html", {"filter": car_filter})
-
-
-def cars_lists(request):
-    car = Car.objects.all()
-    query = request.GET.get("q")
-    if query:
-        car = car.filter(
-            Q(make__icontains=query)
-            | Q(car_model__icontains=query)
-            | Q(color__icontains=query)
-            | Q(num_seats__icontains=query)
-            | Q(daily_rental_price__icontains=query)
-        )
-
-    paginator = Paginator(car, 12)  # Show 15 contacts per page
-    page = request.GET.get("page")
-    try:
-        car = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        car = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        car = paginator.page(paginator.num_pages)
-    context = {
-        "car": car,
-    }
-    return render(request, "cars/cars_list.html", context)
-
-
 @require_GET
 def search_cars(request):
     search_term = request.GET.get("search")
@@ -204,19 +158,6 @@ class CarListView(ListView):
             queryset = queryset.filter(is_booked=False)
         return queryset
 
-# def Profile_View(request, pk):
-#   car = get_object_or_404(Car, pk=pk)
-#  rentals = Rental.objects.filter(car=car)
-# return render(request, 'car_profile.html', {'car': car, 'rentals': rentals})
-
-
-# def search_car(request):
-#   if request.method == "POST":
-#      search = request.POST.get('car_search')
-#     cars = Car.objects.filter(Q(brand=search) | Q(model=search))
-#    return render(request, "cars/search_car.html", {'query': search, 'query_base': cars})
-# else:
-#   return render(request, "cars/search_car.html", {})
 
 
 

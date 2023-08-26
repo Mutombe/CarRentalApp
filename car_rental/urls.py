@@ -9,7 +9,6 @@ from home.views import (
 urlpatterns = [
     path('', landingpage, name='landingpage'),
     path('', include("cars.urls")),
-    path('contact/', include("contact.urls")),
     path('', include("chauffeur.urls")),
     path('', include("rental.urls")),
     path('', include("car_owner.urls")),

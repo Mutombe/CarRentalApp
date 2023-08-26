@@ -49,41 +49,6 @@ class CarUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("dash")
 
 
-def profile(request):
-    chauffeur_details = Chauffeur.objects.filter(driver=request.user)
-    context = {"chauffeur_details": chauffeur_details}
-    return render(request, "car_owner/profile.html", context)
-
-
-def add_profile(request):
-    if request.method == "POST":
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-            return redirect("profile")
-    else:
-        form = ProfileForm()
-    context = {
-        "form": form,
-    }
-    return render(request, "car_owner/add_profile.html", context)
-
-
-def owner_edit_profile(request):
-    if request.user.profile:
-        if request.method == "POST":
-            form = ProfileForm(request.POST, instance=request.user.profile)
-            if form.is_valid():
-                form.save()
-                return redirect("profile")
-        else:
-            form = ProfileForm(instance=request.user.profile)
-        return render(request, "car_owner/edit_profile.html", {"form": form})
-    else:
-        return redirect("add_profile")
-
 
 # Multi image approach
 

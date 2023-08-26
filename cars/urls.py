@@ -18,9 +18,4 @@ urlpatterns = [
     path("index/", views.index, name="index"),
     path("search_cars/", views.search_cars, name="search_cars"),
     path("filter_car/", views.car_filter, name="car-filter"),
-    # path('update/<int:pk>/', CarUpdateView.as_view(), name='car_update'),
-    # path('delete/<int:pk>/', CarDeleteView.as_view(), name='car_delete'),
-    # path('update/<cars_id>', views.update_view, name='car-update'),
-    # path('detail/<int:id>', views.Profile_View, name='car_profile'),
-    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

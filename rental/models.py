@@ -80,9 +80,6 @@ class Rental(models.Model):
     def __str__(self):
         return f"{self.customer.username} rented {self.car.make} {self.car.car_model}"
 
-    # rental_hours = rental_duration.total_seconds() / 3600
-
-    
 
 class RentalHistory(models.Model):
     car_owner = models.CharField(max_length=100, default=None, blank=False)

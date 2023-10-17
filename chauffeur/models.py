@@ -19,7 +19,7 @@ class Chauffeur(models.Model):
         decimal_places=2,
         max_digits=6,
         default=Decimal("0.00"),
-    )  # validators=[validate_chauffeur_fee]
+    ) 
     driver_experience = models.PositiveIntegerField(default=None)
     ecocash_rate = models.DecimalField(
         default=Decimal("0.00"), max_digits=7, decimal_places=2
